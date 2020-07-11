@@ -1,6 +1,6 @@
 # twenty_four_game
 
-A new Flutter application.
+A Flutter application for the well-known 24 Game where players combine 4 numbers through a series of operations to reach the number 24. Most of the files are found in the /lib folder but there are important assets and dependencies in the /test/pubspec.yaml file. This is my first project using Flutter and Dart, but I think it turned out alright. Enjoy!
 
 ## Getting Started
 
