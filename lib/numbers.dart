@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import './home.dart';
 import './csv_reader.dart';
 import './normal.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import './num_button.dart';
 import './op_button.dart';
+import './operation.dart';
 
 class Numbers extends StatefulWidget {
   final List<double> _numList;
@@ -26,11 +26,17 @@ class Numbers extends StatefulWidget {
 }
 
 class NumbersState extends State<Numbers> {
-
   List<bool> _isSelected = [false, false, false, false];
   List<bool> _opSelected = [false, false, false, false];
   List<bool> _disabledButtons = [false, false, false, false];
   List<Operation> _previousOperations = [];
+  bool _isSolved = false;
+
+  bool get isSolved => _isSolved;
+
+  void solved() {
+    _isSolved = true;
+  }
 
   List<Operation> get previousOperations => _previousOperations;
 
@@ -49,7 +55,14 @@ class NumbersState extends State<Numbers> {
     Image.asset("assets/division.png")
   ];
 
-//  List<Color> _opColors = [Color.fromRGBO(127, 247, 255, 1.0)];
+  List<Color> _opColors = [
+    Color.fromRGBO(255, 206, 186, 1.0),
+    Color.fromRGBO(255, 226, 173, 1.0),
+    Color.fromRGBO(176, 255, 226, 1.0),
+    Color.fromRGBO(206, 199, 255, 1.0)
+  ];
+
+  List<Color> get opColors => _opColors;
 
   List get operators => _operators;
 
@@ -66,6 +79,7 @@ class NumbersState extends State<Numbers> {
   }
 
   List<bool> get opSelected => _opSelected;
+
   void changeOPSelected(int index, bool value) {
     _opSelected[index] = value;
   }
@@ -93,6 +107,8 @@ class NumbersState extends State<Numbers> {
         break;
     }
     removeOperation();
+    changeSelected(o.changedIndex, false);
+    changeSelected(o.operandIndex, true);
     disabledButtons[o.operandIndex] = false;
     widget.changeNumList(o.changedIndex, value);
   }
@@ -102,8 +118,8 @@ class NumbersState extends State<Numbers> {
     double _height = MediaQuery.of(context).size.height;
     String enterSepSols = '';
     for (int i = 0;
-    i < Database.getSolutions().elementAt(widget.comboIndex).length;
-    i++) {
+        i < Database.getSolutions().elementAt(widget.comboIndex).length;
+        i++) {
       enterSepSols += (i + 1).toString() + ":  ";
       enterSepSols += Database.getSolutions().elementAt(widget.comboIndex)[i];
       if (i !=
@@ -115,73 +131,61 @@ class NumbersState extends State<Numbers> {
     return showDialog(
         context: context,
         builder: (context) {
-          return AlertDialog(
-            title: FittedBox(
-              child: Center(
-                  child: Text(
-                    "Solutions:",
-                    style: Theme.of(context).textTheme.headline1,
-                  )),
-            ),
-            content: FittedBox(
-              child: Text(
-                enterSepSols,
-                style: Theme.of(context).textTheme.headline4,
+          return GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.pushReplacementNamed(
+                context,
+                '/normal',
+              );
+            },
+            child: AlertDialog(
+              title: FittedBox(
+                child: Center(
+                    child: Text(
+                  "Solutions:",
+                  style: Theme.of(context).textTheme.headline1,
+                )),
+              ),
+              content: FittedBox(
+                child: Column(
+                  children: <Widget>[
+                    Text(
+                      enterSepSols,
+                      style: Theme.of(context).textTheme.headline4,
+                    ),
+                    Text(
+                      '\nClick Anywhere to Continue',
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                  ],
+                ),
               ),
             ),
-            actions: <Widget>[
-              RaisedButton(
-                color: Colors.blue,
-                textColor: Colors.white,
-                onPressed: () {
-                  Navigator.pop(context);
-                  Navigator.pushReplacement(
-                    context,
-                    PageRouteBuilder(
-                      pageBuilder: (context, animation1, animation2) => Normal(),
-                      transitionDuration: Duration(seconds: 0),
-                    ),
-                  );
-                },
-                child: Container(
-                  width: _width/4,
-                  height: _height/12,
-                  child: FittedBox(
-                    child: AutoSizeText(
-                      "NEXT",
-                      minFontSize: 15,
-                      maxFontSize: 50,
-                      maxLines: 1,
-                    ),
-                  ),
-                ),
-              )
-            ],
           );
-        });
+        }).then( (result) {
+      Navigator.pushReplacementNamed(context,'/normal');
+    }
+    );
   }
 
-//  update() {
-//    int comboIndex2 = Random().nextInt(Database.getCombos().length);
-//    return Numbers(Database.getCombos().elementAt(comboIndex2), comboIndex2);
-//  }
+  Function undoFunction() {
+    if (previousOperations.isEmpty) {
+      return null;
+    } else {
+      return () => setState(() => reverseOperation(
+          previousOperations.elementAt(previousOperations.length - 1)));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
 
-    Function undoFunction() {
-      if (previousOperations.isEmpty) {
-        return null;
-      } else {
-        return () => setState(() => reverseOperation(
-            previousOperations.elementAt(previousOperations.length - 1)));
-      }
-    }
-
     return GridView.count(
         primary: false,
+        physics: NeverScrollableScrollPhysics(),
         childAspectRatio: 1.0,
         padding: const EdgeInsets.all(20),
         crossAxisSpacing: 1.5,
@@ -199,7 +203,7 @@ class NumbersState extends State<Numbers> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
                     OpButton(0, this),
-                    Spacer(),
+                    Spacer(flex: 100),
                     OpButton(1, this),
                   ],
                 ),
@@ -243,7 +247,10 @@ class NumbersState extends State<Numbers> {
                     child: ConstrainedBox(
                       constraints: BoxConstraints.expand(),
                       child: FlatButton(
-                          onPressed: () => createDialog(context),
+                          onPressed: () {
+                            createDialog(context);
+                            _isSolved=true;
+                          },
                           child: FittedBox(
                             child: Text(
                               "SKIP",
@@ -258,18 +265,4 @@ class NumbersState extends State<Numbers> {
           )
         ]);
   }
-}
-
-class Operation {
-  int _changedIndex;
-  int _opIndex;
-  int _operandIndex;
-
-  Operation(this._changedIndex, this._opIndex, this._operandIndex);
-
-  int get changedIndex => _changedIndex;
-
-  int get operandIndex => _operandIndex;
-
-  int get opIndex => _opIndex;
 }

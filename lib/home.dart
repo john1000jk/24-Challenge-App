@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import './main.dart';
 import './csv_reader.dart';
+import './transitions.dart';
 
 class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
+    bool _normalClicked = false;
+    bool _timeTrialClicked = false;
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -14,8 +17,19 @@ class Home extends StatelessWidget {
           RaisedButton(
             textColor: Colors.white,
             padding: const EdgeInsets.all(0.0),
-            onPressed: () {
-              Navigator.pushNamed(context, '/time_trial');
+            onPressed: () async {
+              if (!_timeTrialClicked) {
+                _timeTrialClicked = true;
+                if (Database.isLoaded) {
+                  _timeTrialClicked = false;
+                  Navigator.pushNamed(context, '/begin_screen1');
+                } else {
+                  await Database.fetchVenueDatabase().then((result) {
+                    _timeTrialClicked = false;
+                    Navigator.pushNamed(context, '/begin_screen1');
+                  });
+                }
+              }
             },
             child: Container(
               decoration: const BoxDecoration(
@@ -32,15 +46,16 @@ class Home extends StatelessWidget {
               padding: const EdgeInsets.all(10.0),
               child: Container(
                 width: _width - 60,
-                height: _height/7,
-                child: FittedBox (
+                height: _height / 7,
+                child: FittedBox(
                   fit: BoxFit.contain,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       Padding(
-                        padding: const EdgeInsets.only(top: 2.0, right: 2.0, bottom: 2.0),
+                        padding: const EdgeInsets.only(
+                            top: 2.0, right: 2.0, bottom: 2.0),
                         child: Icon(
                           Icons.timer,
                           color: Colors.white,
@@ -66,8 +81,14 @@ class Home extends StatelessWidget {
           RaisedButton(
             textColor: Colors.white,
             padding: const EdgeInsets.all(0.0),
-            onPressed: () {
-              Navigator.pushNamed(context, '/normal');
+            onPressed: () async {
+              if (!_normalClicked) {
+                _normalClicked = true;
+                await Database.fetchVenueDatabase().then((result) {
+                  _normalClicked = false;
+                  Navigator.pushNamed(context, '/normal');
+                });
+              }
             },
             child: Container(
               decoration: const BoxDecoration(
@@ -84,15 +105,16 @@ class Home extends StatelessWidget {
               padding: const EdgeInsets.all(10.0),
               child: Container(
                 width: _width - 60,
-                height: _height/7,
-                child: FittedBox (
+                height: _height / 7,
+                child: FittedBox(
                   fit: BoxFit.contain,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       Padding(
-                        padding: const EdgeInsets.only(top: 2.0, right: 2.0, bottom: 2.0),
+                        padding: const EdgeInsets.only(
+                            top: 2.0, right: 2.0, bottom: 2.0),
                         child: Icon(
                           Icons.border_all,
                           color: Colors.white,

@@ -6,9 +6,10 @@ import 'dart:math';
 
 class Database {
 
-static List<List<dynamic>> venueDB;
+static List<List<dynamic>> venueDB = [];
 static List<List<double>> _combos;
 static List<List<String>> _solutions;
+static bool isLoaded = false;
 
 static List<List<double>> getCombos(){
   return Database._combos;
@@ -52,6 +53,8 @@ static fetchVenueDatabase() async{
   }
   Database._combos = startingNums;
   Database._solutions = totalSolutions;
+  Database.isLoaded = true;
+  print("I finished");
   }
 }
 

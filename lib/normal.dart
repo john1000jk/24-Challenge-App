@@ -6,20 +6,13 @@ import './numbers.dart';
 import './csv_reader.dart';
 import 'dart:math';
 
-class Normal extends StatefulWidget {
+class Normal extends StatelessWidget {
 
-  @override
-  State<StatefulWidget> createState() {
-    return _NormalState();
-  }
-
-}
-
-class _NormalState extends State<Normal> {
   @override
   Widget build(BuildContext context) {
     int comboIndex = Random().nextInt(Database.getCombos().length);
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text('Normal Screen'),
       ),
