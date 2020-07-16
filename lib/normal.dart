@@ -10,6 +10,7 @@ class Normal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Database.resetValues();
     int comboIndex = Random().nextInt(Database.getCombos().length);
     return Scaffold(
       backgroundColor: Colors.white,

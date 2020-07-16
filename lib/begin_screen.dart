@@ -5,7 +5,7 @@ import './normal.dart';
 import './transitions.dart';
 
 class BeginScreen extends StatefulWidget {
-  String route;
+  final String route;
   BeginScreen(this.route);
 
   @override
@@ -40,7 +40,7 @@ class _BeginState extends State<BeginScreen> with TickerProviderStateMixin {
                 color: Colors.lightBlueAccent,
                 onPressed: () {
                   reveal = true;
-                  Navigator.pushReplacementNamed(context, '/normal');
+                  Navigator.pushReplacementNamed(context, widget.route);
                 },
                 child: ConstrainedBox(
                   constraints: BoxConstraints.expand(),

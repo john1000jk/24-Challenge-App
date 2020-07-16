@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:twenty_four_game/staggered_numbers.dart';
 import './main.dart';
 import './csv_reader.dart';
 import './transitions.dart';
@@ -84,10 +85,15 @@ class Home extends StatelessWidget {
             onPressed: () async {
               if (!_normalClicked) {
                 _normalClicked = true;
-                await Database.fetchVenueDatabase().then((result) {
+                if (Database.isLoaded) {
                   _normalClicked = false;
                   Navigator.pushNamed(context, '/normal');
-                });
+                } else {
+                    await Database.fetchVenueDatabase().then((result) {
+                    _normalClicked = false;
+                    Navigator.pushNamed(context, '/normal');
+                  });
+                }
               }
             },
             child: Container(

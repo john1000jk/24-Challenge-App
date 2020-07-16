@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:twenty_four_game/staggered_numbers.dart';
 import './numbers.dart';
 import './operation.dart';
 
@@ -57,6 +58,8 @@ class _NumButtonState extends State<NumButton> {
             }
             if (flag) {
               widget.parent.createDialog(widget.parent.context);
+              StaggeredNumbersState.numCorrect += 1;
+              StaggeredNumbersState.current += 10;
             }
           }
         }
@@ -98,15 +101,6 @@ class _NumButtonState extends State<NumButton> {
   Widget build(BuildContext context) {
 
     return FlatButton(
-//      shape: ContinuousRectangleBorder(
-//        side: widget.parent.isSelected[widget.index]
-//          ? BorderSide(color: Colors.black, width: 1.0)
-//          : BorderSide(color: Colors.white, width: 0.0),
-//      ),
-//      borderSide: widget.parent.isSelected[widget.index]
-//          ? BorderSide(color: Colors.black, width: 1.0)
-//          : BorderSide(color: Colors.white, width: 0.0),
-//      disabledBorderColor: Colors.white,
       color: widget.parent.isSelected[widget.index]
       ? Color.fromRGBO(255, 227, 232, 1.0)
       : Colors.white,

@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
     return StatefulWrapper(
       onInit: () async {
         await Database.fetchVenueDatabase().then((result) {
-          Normal();
+          Normal().build(context);
         });
       },
       child: MaterialApp(

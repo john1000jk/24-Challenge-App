@@ -6,10 +6,15 @@ import 'dart:math';
 
 class Database {
 
-static List<List<dynamic>> venueDB = [];
+static List<List<dynamic>> _venueDB = [];
 static List<List<double>> _combos;
+static List<List<double>> _combos2;
 static List<List<String>> _solutions;
 static bool isLoaded = false;
+
+static void resetValues() {
+  Database._combos = Database._combos2;
+}
 
 static List<List<double>> getCombos(){
   return Database._combos;
@@ -30,8 +35,8 @@ static Future<List<List<dynamic>>> loadVenuedatabase() async {
 }
 
 static fetchVenueDatabase() async{
-  venueDB = await loadVenuedatabase();
-  List<String> comboString = venueDB.map<String>((row) => row[1]).toList(growable: false);
+  _venueDB = await loadVenuedatabase();
+  List<String> comboString = _venueDB.map<String>((row) => row[1]).toList(growable: false);
   List<List<double>> startingNums = [];
   List<List<String>> totalSolutions = [];
   for (int i = 1; i < comboString.length; i++) {
@@ -42,9 +47,9 @@ static fetchVenueDatabase() async{
       fourNums.add(double.parse(sepString[j]));
     }
     List<String> indexedSols = [];
-    for (int j = 2; j < venueDB[i].length; j++) {
-      if (venueDB[i][j].toString().trim() != '') {
-        indexedSols.add(venueDB[i][j].toString().trim());
+    for (int j = 2; j < _venueDB[i].length; j++) {
+      if (_venueDB[i][j].toString().trim() != '') {
+        indexedSols.add(_venueDB[i][j].toString().trim());
       }
     }
     fourNums.shuffle(Random());
@@ -52,6 +57,7 @@ static fetchVenueDatabase() async{
     totalSolutions.add(indexedSols);
   }
   Database._combos = startingNums;
+  Database._combos2 = Database._combos;
   Database._solutions = totalSolutions;
   Database.isLoaded = true;
   print("I finished");
