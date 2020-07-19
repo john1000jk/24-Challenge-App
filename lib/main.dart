@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:twenty_four_game/begin_screen.dart';
+import 'package:twenty_four_game/time_up.dart';
 import 'package:twenty_four_game/transitions.dart';
 import './home.dart';
 import './time_trial.dart';
 import './normal.dart';
 import './how_to_play.dart';
 import './csv_reader.dart';
-import './numbers.dart';
-import 'dart:async' show Future;
 
+const MainColor = const Color.fromRGBO(207, 232, 255, 1.0);
 
 void main() {
   runApp(MyApp());
@@ -54,6 +54,12 @@ class MyApp extends StatelessWidget {
               break;
             case '/begin_screen2':
               return MaterialPageRoute(builder: (context) => BeginScreen('/normal'));
+              break;
+            case '/time_up':
+              return FadeRoute(page: AnimationStation());
+              break;
+            case '/previous_q':
+              return FadeRoute(page: AnsweredQuestions());
               break;
           }
           return MaterialPageRoute(builder: (context) => Home());

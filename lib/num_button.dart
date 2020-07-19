@@ -58,8 +58,12 @@ class _NumButtonState extends State<NumButton> {
             }
             if (flag) {
               widget.parent.createDialog(widget.parent.context);
-              StaggeredNumbersState.numCorrect += 1;
-              StaggeredNumbersState.current += 10;
+              widget.parent.skipped = false;
+              if (widget.parent is StaggeredNumbersState) {
+                StaggeredNumbersState.problemIndices.add(widget.parent.comboIndexS);
+                StaggeredNumbersState.numCorrect += 1;
+                StaggeredNumbersState.current += 10;
+              }
             }
           }
         }
@@ -82,7 +86,7 @@ class _NumButtonState extends State<NumButton> {
               _performOperation(2);
             } else if (widget.parent.opSelected[3]) {
               _performOperation(3);
-            }
+              }
             for (int i = 0; i < widget.parent.isSelected.length; i++) {
               if (i != widget.index) {
                 widget.parent.changeSelected(i, false);
@@ -102,7 +106,7 @@ class _NumButtonState extends State<NumButton> {
 
     return FlatButton(
       color: widget.parent.isSelected[widget.index]
-      ? Color.fromRGBO(255, 227, 232, 1.0)
+      ? Color.fromRGBO(255, 222, 222, 1.0)
       : Colors.white,
       onPressed: _totalFunction(),
       child: Center(
@@ -118,7 +122,11 @@ class _NumButtonState extends State<NumButton> {
                         ? 0
                         : 2)
                     : "",
-                style: Theme.of(context).textTheme.headline1,
+                style: TextStyle(
+                  fontSize: 96,
+                  fontWeight: Theme.of(context).textTheme.headline1.fontWeight,
+                  color: Color.fromRGBO(71, 71, 71, 1.0),
+                ),
               ),
             ),
           )),

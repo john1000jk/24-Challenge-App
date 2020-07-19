@@ -15,6 +15,7 @@ class TimeTrial extends StatelessWidget {
   Widget build(BuildContext context) {
     Database.resetValues();
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(
             'Time Trial Screen'),

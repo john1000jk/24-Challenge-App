@@ -2,10 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:twenty_four_game/staggered_numbers.dart';
 import './csv_reader.dart';
-import './normal.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import './num_button.dart';
 import './op_button.dart';
 import './operation.dart';
@@ -34,6 +31,7 @@ class NumbersState extends State<Numbers> {
   List<bool> _opSelected = [false, false, false, false];
   List<bool> _disabledButtons = [false, false, false, false];
   List<Operation> _previousOperations = [];
+  bool skipped = true;
   int comboIndexS;
 
   List<Operation> get previousOperations => _previousOperations;
@@ -54,9 +52,9 @@ class NumbersState extends State<Numbers> {
   ];
 
   List<Color> _opColors = [
-    Color.fromRGBO(255, 206, 186, 1.0),
-    Color.fromRGBO(255, 226, 173, 1.0),
+    Color.fromRGBO(255, 233, 204, 1.0),
     Color.fromRGBO(176, 255, 226, 1.0),
+    Color.fromRGBO(194, 225, 255, 1.0),
     Color.fromRGBO(206, 199, 255, 1.0)
   ];
 
@@ -135,8 +133,6 @@ class NumbersState extends State<Numbers> {
   }
 
   createDialog(BuildContext context) {
-    double _width = MediaQuery.of(context).size.width;
-    double _height = MediaQuery.of(context).size.height;
     String enterSepSols = '';
     String enterSepSols2 = '';
     for (int i = 0;
@@ -167,7 +163,6 @@ class NumbersState extends State<Numbers> {
         builder: (context) {
           return GestureDetector(
             onTap: () {
-              reset();
               Navigator.pop(context);
             },
             child: AlertDialog(
@@ -312,7 +307,7 @@ class NumbersState extends State<Numbers> {
                           child: FittedBox(
                             child: Text(
                               "UNDO",
-                              style: TextStyle(fontSize: 500, fontWeight: FontWeight.normal),
+                              style: TextStyle(fontSize: 55, fontWeight: FontWeight.normal),
                             ),
                           )),
                     ),
@@ -329,7 +324,7 @@ class NumbersState extends State<Numbers> {
                           child: FittedBox(
                             child: Text(
                               "SKIP",
-                              style: TextStyle(fontSize: 500, fontWeight: FontWeight.normal),
+                              style: TextStyle(fontSize: 55, fontWeight: FontWeight.normal),
                             ),
                           )),
                     ),
