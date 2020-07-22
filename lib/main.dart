@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:twenty_four_game/begin_screen.dart';
-import 'file:///C:/Users/john1/AndroidStudioProjects/twenty_four_game/lib/onboarding/onboarding.dart';
-import 'package:twenty_four_game/time_up.dart';
+import 'package:twenty_four_game/screens/begin_screen.dart';
+import 'package:twenty_four_game/screens/time_trial/time_up.dart';
 import 'package:twenty_four_game/transitions.dart';
-import './home.dart';
-import './time_trial.dart';
-import './normal.dart';
-import './how_to_play.dart';
+import 'screens/home.dart';
+import 'screens/time_trial/time_trial.dart';
+import 'screens/practice/normal.dart';
+import 'screens/how_to_play.dart';
 import './csv_reader.dart';
 import 'themes/styles.dart';
 

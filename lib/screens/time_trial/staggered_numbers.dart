@@ -3,9 +3,9 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import './numbers.dart';
-import './num_button.dart';
-import './op_button.dart';
+import 'package:twenty_four_game/screens/practice/numbers.dart';
+import '../../buttons/num_button.dart';
+import '../../buttons/op_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class StaggeredNumbers extends Numbers {

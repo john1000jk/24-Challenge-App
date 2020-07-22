@@ -1,8 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import './main.dart';
-import './normal.dart';
-import './transitions.dart';
 
 class BeginScreen extends StatefulWidget {
   final String route;
@@ -16,7 +13,6 @@ class _BeginState extends State<BeginScreen> with TickerProviderStateMixin {
 
   bool reveal = true;
   bool done = false;
-  Color _color = Colors.lightBlueAccent;
 
   @override
   Widget build(BuildContext context) {

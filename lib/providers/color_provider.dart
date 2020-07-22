@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:twenty_four_game/onboarding/data/onboard_page_data.dart';
+import 'package:twenty_four_game/screens/onboarding/data/onboard_page_data.dart';
 
 class ColorProvider with ChangeNotifier {
   Color _color = onboardData[0].secondColor;

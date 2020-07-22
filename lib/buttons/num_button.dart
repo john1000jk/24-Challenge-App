@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:twenty_four_game/staggered_numbers.dart';
+import 'package:twenty_four_game/screens/time_trial/staggered_numbers.dart';
 import 'package:twenty_four_game/themes/styles.dart';
-import './numbers.dart';
-import './operation.dart';
+import '../screens/practice/numbers.dart';
+import 'operation.dart';
 
 class NumButton extends StatefulWidget {
   final int index;

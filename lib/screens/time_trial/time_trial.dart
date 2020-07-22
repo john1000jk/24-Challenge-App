@@ -1,13 +1,9 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:twenty_four_game/begin_screen.dart';
-import 'package:twenty_four_game/staggered_numbers.dart';
+import 'package:twenty_four_game/screens/time_trial/staggered_numbers.dart';
 import 'package:twenty_four_game/themes/styles.dart';
-import './home.dart';
-import './time_trial.dart';
-import './normal.dart';
-import 'csv_reader.dart';
+import '../../csv_reader.dart';
 
 class TimeTrial extends StatelessWidget {
   final int comboIndex = Random().nextInt(Database.getCombos().length);

@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:twenty_four_game/onboarding/models/onboard_page_model.dart';
+import 'package:twenty_four_game/screens/onboarding/models/onboard_page_model.dart';
 
 class OnboardPage extends StatefulWidget {
   final OnboardPageModel pageModel;
@@ -20,6 +20,8 @@ class _OnboardPageState extends State<OnboardPage> {
     double _height = MediaQuery.of(context).size.height;
 
     return Container(
+      width: _width,
+      height: _height,
       color: widget.pageModel.primeColor,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -28,7 +30,7 @@ class _OnboardPageState extends State<OnboardPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.only(top: 90.0, left: (widget.pageModel.secondPath != '') ? 15.0: 0),
+                padding: EdgeInsets.only(top: _height/9, left: (widget.pageModel.secondPath != '') ? 15.0: 0),
                 child: Container(
                   height: (widget.pageModel.thirdPath == '') ? _height / 3 : _height/6,
                   width: (widget.pageModel.secondPath == '') ? _width*.8 : (_width-30)/2,
@@ -39,7 +41,7 @@ class _OnboardPageState extends State<OnboardPage> {
                 ),
               ),
               (widget.pageModel.secondPath != '') ? Padding(
-                padding: EdgeInsets.only(top: 90.0, right: 15.0),
+                padding: EdgeInsets.only(top: _height/9, right: 15.0),
                 child: Container(
                   height: (widget.pageModel.thirdPath == '') ? _height / 3 : _height/6,
                   width: (_width - 30)/2,
@@ -59,25 +61,22 @@ class _OnboardPageState extends State<OnboardPage> {
               ),
             ),
           ): Container(),
+
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30.0),
             child: Container(
-              height: _height / 2,
-              width: _width,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
+                  Text(
+                    widget.pageModel.caption,
+                    style: Theme.of(context).textTheme.headline3.copyWith(
+                      color: widget.pageModel.secondColor.withOpacity(.8),
+                      fontSize: 28,
+                        ),
+                  ),
                   Padding(
-                      padding: EdgeInsets.symmetric(vertical: 18.0),
-                      child: Text(
-                        widget.pageModel.caption,
-                        style: Theme.of(context).textTheme.headline3.copyWith(
-                          color: widget.pageModel.secondColor.withOpacity(.8),
-                          fontSize: 28,
-                            ),
-                      )),
-                  Padding(
-                    padding: EdgeInsets.all(0),
+                    padding: EdgeInsets.only(top: _height/60, bottom: _height/120),
                     child: Text(
                       widget.pageModel.message,
                       style: Theme.of(context).textTheme.headline4.copyWith(

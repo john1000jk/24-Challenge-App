@@ -1,11 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:twenty_four_game/themes/styles.dart';
-import './home.dart';
-import './time_trial.dart';
-import './normal.dart';
-import './numbers.dart';
+import '../screens/practice/numbers.dart';
 
 class OpButton extends StatefulWidget {
   final int index;

@@ -3,9 +3,9 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/scheduler.dart';
 
-import './csv_reader.dart';
+import '../../csv_reader.dart';
 import 'package:flutter/material.dart';
-import 'package:twenty_four_game/staggered_numbers.dart';
+import 'package:twenty_four_game/screens/time_trial/staggered_numbers.dart';
 import 'package:confetti/confetti.dart';
 
 class AnimationStation extends StatefulWidget {

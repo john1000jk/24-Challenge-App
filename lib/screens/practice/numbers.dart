@@ -2,10 +2,10 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import './csv_reader.dart';
-import './num_button.dart';
-import './op_button.dart';
-import './operation.dart';
+import '../../csv_reader.dart';
+import '../../buttons/num_button.dart';
+import '../../buttons/op_button.dart';
+import '../../buttons/operation.dart';
 
 class Numbers extends StatefulWidget {
   final List<double> _numList;

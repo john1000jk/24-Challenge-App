@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:twenty_four_game/onboarding/components/onboard_page.dart';
-import 'package:twenty_four_game/onboarding/data/onboard_page_data.dart';
+import 'package:twenty_four_game/screens/onboarding/components/onboard_page.dart';
+import 'package:twenty_four_game/screens/onboarding/data/onboard_page_data.dart';
 import 'package:provider/provider.dart';
 import 'package:twenty_four_game/providers/color_provider.dart';
 
@@ -8,6 +8,9 @@ class Onboarding extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // double _width = MediaQuery.of(context).size.width;
+    double _height = MediaQuery.of(context).size.width;
+
     ColorProvider colorProvider = Provider.of<ColorProvider>(context);
     return Stack(
       children: <Widget>[
@@ -24,7 +27,7 @@ class Onboarding extends StatelessWidget {
         ),
         Container(
           width: double.infinity,
-          height: 100,
+          height: _height/5,
           child: Align(
             alignment: Alignment.bottomCenter,
             child: Row(

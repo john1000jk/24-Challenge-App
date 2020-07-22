@@ -1,6 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:twenty_four_game/onboarding/models/onboard_page_model.dart';
+import 'package:twenty_four_game/screens/onboarding/models/onboard_page_model.dart';
 
 List<OnboardPageModel> onboardData = [
   OnboardPageModel(
@@ -13,9 +13,9 @@ List<OnboardPageModel> onboardData = [
     '',
     'Introduction',
     'Welcome!',
-    'The goal of this game is to use whatever operations '
-        'possible to convert 4 numbers into the elusive 24. '
-        'There are currently two game modes: practice and time trial. '
+    'The goal of this game is to perform operations in any order '
+        'to convert 4 numbers into the elusive 24. Simple Enough! '
+        'There are currently two game modes: Practice and Time Trial. '
         'Scroll right to learn how they work',
   ),
   OnboardPageModel(
@@ -29,7 +29,7 @@ List<OnboardPageModel> onboardData = [
     'Rules',
     'Getting Started',
     'In both game modes'
-        ', 4 numbers and 4 operatione will appear on screen. To select a '
+        ', 4 numbers and 4 operations will appear on screen. To select a '
         'number or operation, simply click on the button. If a number and an '
         'operation are selected, click on another number to perform the operation ',
   ),
@@ -58,8 +58,8 @@ List<OnboardPageModel> onboardData = [
       'assets/numbers7.png',
       'Time Trial',
       'Special Icons',
-      'The time trial screen also features the three icons above. '
-          'The timer ticks down from 120 seconds, telling you when the game '
-          'will end. The star gives you the number of problems solved this round. And '
+      'Time Trial features the three icons above. '
+          'The time remaining ticks down from 120 seconds. Solving a set adds 10 seconds. '
+          'Skipping a set removes 30. The star tracks the number of problems solved this round. And '
           'the 24 store shows your high score. Hey, that rhymed!'),
 ];

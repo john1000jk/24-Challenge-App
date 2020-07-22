@@ -22,7 +22,7 @@ class _HomeTwoState extends State<HomeTwo> with TickerProviderStateMixin {
     Color.fromRGBO(25, 168, 58, 1.0),
     Color.fromRGBO(250, 145, 70, 1.0),
   ];
-  AnimationController _controller;
+
   List<AnimationController> _controllers = new List(3);
   List<double> _buttonScales = new List(3);
 
@@ -64,19 +64,18 @@ class _HomeTwoState extends State<HomeTwo> with TickerProviderStateMixin {
       ),
       body: Container(
         width: _width,
-        height: _height * .8,
+        height: _height,
         child: Column(
           children: <Widget>[
-            Spacer(flex: 2),
             Padding(
-              padding: const EdgeInsets.all(20.0),
+              padding: const EdgeInsets.only(top: 20.0, bottom: 5.0),
               child: Stack(
                 alignment: Alignment.center,
                 children: <Widget>[
                   Container(
                     padding: EdgeInsets.all(4.0),
-                    width: _width * .65,
-                    height: _width * .65,
+                    width: _width * .575,
+                    height: _width * .575,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: Colors.blue,
@@ -145,8 +144,8 @@ class _HomeTwoState extends State<HomeTwo> with TickerProviderStateMixin {
                     ),
                   ),
                   Container(
-                    width: _width *.45,
-                    height: _width*.45,
+                    width: _width *.4,
+                    height: _width*.4,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: Colors.white,
@@ -170,6 +169,7 @@ class _HomeTwoState extends State<HomeTwo> with TickerProviderStateMixin {
             _animatedButton(1),
             Spacer(),
             _animatedButton(2),
+            Spacer(flex: 3,),
           ],
         ),
       ),
