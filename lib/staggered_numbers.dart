@@ -46,6 +46,7 @@ class StaggeredNumbersState extends NumbersState {
   @override
   reset() {
     super.reset();
+    problemIndices.add(comboIndexS);
     if (_timerDone) {
       startTimer();
       _timerDone = false;
@@ -66,6 +67,7 @@ class StaggeredNumbersState extends NumbersState {
   void initState() {
     super.initState();
     problemIndices = [];
+    problemIndices.add(comboIndexS);
     _loadHighScore();
     numCorrect = 0;
     current = 120;
@@ -239,7 +241,6 @@ class StaggeredNumbersState extends NumbersState {
                           onPressed: () {
                             if (current >= 1) {
                               createDialog(context);
-                              problemIndices.add(comboIndexS);
                               StaggeredNumbersState.current -= 30;
                             }
                           },

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:twenty_four_game/themes/styles.dart';
 import './home.dart';
 import './time_trial.dart';
 import './normal.dart';
@@ -26,11 +27,11 @@ class _OpButtonState extends State<OpButton> {
       child: Ink(
         decoration: BoxDecoration(
           border: widget.parent.opSelected[widget.index]
-              ? Border.all(color: Colors.white, width: 0.0)
-              : Border.all(color: Colors.white, width: 0.0),
+              ? Border.all(color: AppTheme().accentColor, width: 0.0)
+              : Border.all(color: AppTheme().accentColor, width: 0.0),
           color: widget.parent.opSelected[widget.index]
           ? widget.parent.opColors[widget.index]
-          : Colors.white,
+          : AppTheme().accentColor,
           shape: BoxShape.rectangle,
         ),
         child: FittedBox(
@@ -49,7 +50,7 @@ class _OpButtonState extends State<OpButton> {
               },
             ),
             icon: widget.parent.operators[widget.index],
-            iconSize: widget.index != 3 ? 10000 : 150,
+            iconSize: widget.index != 3 ? 500 : 500,
           ),
         ),
       ),

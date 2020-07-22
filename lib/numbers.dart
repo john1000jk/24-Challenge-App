@@ -103,7 +103,7 @@ class NumbersState extends State<Numbers> {
         value = 1 /
             widget.numList[o.changedIndex] * //Need to check for 0 later
             widget.numList[o.operandIndex];
-        if ((value.round() - value).abs() < .001) {
+        if ((value.round() - value).abs() < .01) {
           value = value.round().toDouble();
         }
         break;
@@ -166,12 +166,22 @@ class NumbersState extends State<Numbers> {
               Navigator.pop(context);
             },
             child: AlertDialog(
-                title: FittedBox(
-                  child: Center(
-                      child: Text(
-                    "Solutions:",
-                        style: TextStyle(fontWeight: FontWeight.normal),
-                  )),
+                title: Container(
+                  decoration: BoxDecoration(
+                      border: Border(
+                          bottom: BorderSide(
+                            width: 2.0,
+                            color: Colors.black26,
+                          )
+                      )
+                  ),
+                  child: FittedBox(
+                    child: Center(
+                        child: Text(
+                      "Solutions:",
+                          style: Theme.of(context).textTheme.headline3,
+                    )),
+                  ),
                 ),
                 content: FittedBox(
                   child: Column(

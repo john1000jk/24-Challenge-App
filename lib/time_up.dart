@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/scheduler.dart';
 
 import './csv_reader.dart';
@@ -18,6 +19,7 @@ class AnimationStationState extends State<AnimationStation>
     with TickerProviderStateMixin {
   ConfettiController _controller;
   AnimationController _animationController;
+  bool _isAnimDisposed = false;
   Animation<double> animation;
 
   @override
@@ -36,16 +38,22 @@ class AnimationStationState extends State<AnimationStation>
   @override
   void dispose() {
     _controller.dispose();
+    _animationController.dispose();
+    _isAnimDisposed = true;
     super.dispose();
   }
 
   Future<void> _playAnimation() async {
     try {
       await Future.delayed(Duration(milliseconds: 1000), () {
-        _animationController.forward().orCancel;
+        if (!_isAnimDisposed) {
+          _animationController.forward();
+        } else {
+          _isAnimDisposed = false;
+        }
       });
-    } on TickerCanceled {
-      // the animation got canceled, probably because we were disposed
+    } on Exception {
+      print('Canceled');
     }
   }
 
@@ -65,7 +73,7 @@ class AnimationStationState extends State<AnimationStation>
           children: <Widget>[
             Container(
               width: _width,
-              height: _height * .025,
+              height: _height * .001,
               child: Align(
                 alignment: Alignment.center,
                 child: ConfettiWidget(
@@ -86,36 +94,34 @@ class AnimationStationState extends State<AnimationStation>
               height: _height * .2,
               child: FittedBox(
                 child: Padding(
-                  padding: EdgeInsets.all(10.0),
+                  padding: EdgeInsets.only(right: 20.0, left: 20.0),
                   child: Text(
                     'Your time is UP!\nFinal Score: ${StaggeredNumbersState.numCorrect}',
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 50,
-                      fontFamily: 'Romanica',
-                    ),
+                    style: Theme.of(context).textTheme.headline2,
                   ),
                 ),
               ),
             ),
             Container(
               width: _width,
-              height: _height*.4,
+              height: _height * .4,
               child: MultiAnimation(
                 controller: _animationController.view,
               ),
             ),
             Container(
               width: _width,
-              height: _height*.15,
+              height: _height * .15,
               child: Row(
                 children: <Widget>[
                   Spacer(),
                   FittedBox(
                     child: IconButton(
-                      icon: Icon(Icons.grid_on),
+                      icon: Icon(Icons.question_answer),
                       iconSize: 70,
-                      onPressed: () => Navigator.pushNamed(context, '/previous_q'),
+                      onPressed: () =>
+                          Navigator.pushNamed(context, '/previous_q'),
                       tooltip: 'Past Questions',
                     ),
                   ),
@@ -124,7 +130,8 @@ class AnimationStationState extends State<AnimationStation>
                     child: IconButton(
                       icon: Icon(Icons.replay),
                       iconSize: 70,
-                      onPressed: () => Navigator.pushReplacementNamed(context, '/begin_screen1'),
+                      onPressed: () => Navigator.pushReplacementNamed(
+                          context, '/begin_screen1'),
                     ),
                   ),
                   Spacer(),
@@ -168,7 +175,7 @@ class MultiAnimation extends StatelessWidget {
           TweenSequenceItem<double>(
             tween: Tween<double>(
               begin: 50,
-              end:3500,
+              end: 3500,
             ),
             weight: 40,
           ),
@@ -189,7 +196,7 @@ class MultiAnimation extends StatelessWidget {
           TweenSequenceItem<double>(
             tween: Tween<double>(
               begin: -2000,
-              end: 70,
+              end: 50,
             ),
             weight: 10.0,
           ),
@@ -198,12 +205,11 @@ class MultiAnimation extends StatelessWidget {
             parent: controller,
             curve: Interval(
               .05,
-              .5 + Random().nextDouble()*.5,
+              .5 + Random().nextDouble() * .5,
               curve: Curves.linear,
             ),
           ),
         ),
-
         translateY = TweenSequence<double>(<TweenSequenceItem<double>>[
           TweenSequenceItem<double>(
               tween: Tween<double>(
@@ -233,14 +239,14 @@ class MultiAnimation extends StatelessWidget {
             weight: 15.0,
           ),
         ]).animate(
-            CurvedAnimation(
-              parent: controller,
-              curve: Interval(
-                .05,
-                .5 + Random().nextDouble()*.5,
-                curve: Curves.linear,
-              ),
+          CurvedAnimation(
+            parent: controller,
+            curve: Interval(
+              .05,
+              .5 + Random().nextDouble() * .5,
+              curve: Curves.linear,
             ),
+          ),
         ),
         scale = Tween<double>(
           begin: 1.0,
@@ -272,13 +278,12 @@ class MultiAnimation extends StatelessWidget {
           opacity: opacity.value,
           child: Text(
             '24!',
-            style: TextStyle(
-                  fontSize: 40, fontFamily: 'Cardo'),
+            style: Theme.of(context).textTheme.headline2,
           ),
         ),
         transform:
-        Matrix4.translationValues(translateX.value, translateY.value, 0)
-          ..scale(scale.value),
+            Matrix4.translationValues(translateX.value, translateY.value, 0)
+              ..scale(scale.value),
       ),
     );
   }
@@ -293,9 +298,10 @@ class MultiAnimation extends StatelessWidget {
   }
 }
 
-class AnsweredQuestions extends StatelessWidget{
+class AnsweredQuestions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    print(StaggeredNumbersState.problemIndices);
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
     // TODO: implement build
@@ -303,52 +309,116 @@ class AnsweredQuestions extends StatelessWidget{
       appBar: AppBar(
         title: Text('Previous Questions'),
       ),
-      body: Container(
-        width: _width*.9,
-        height: _height * .8,
-        child: ListView.separated(
-          padding: const EdgeInsets.all(8.0),
-          itemCount: StaggeredNumbersState.problemIndices.length,
-          itemBuilder: (BuildContext context, int index) {
-            return Container(
-              height: _height * 1.8,
-              child: ListView.separated(
-                padding: const EdgeInsets.all(8),
-                scrollDirection: Axis.horizontal,
-                itemCount: Database.getSolutions()
-                    .elementAt(
-                    StaggeredNumbersState.problemIndices[index])
-                    .length + 2,
-                itemBuilder: (BuildContext context, int index2) {
-                  return Container(
-                    width: _width/3,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: FittedBox(
-                        child: (index2 == 0)
-                            ? Text('Problem $index')
-                            : (index2 == 1)
-                            ? Text(
-                            '${Database.writCombos().elementAt(StaggeredNumbersState.problemIndices[index])}')
-                            : Text(
-                            '${Database.getSolutions().elementAt(StaggeredNumbersState.problemIndices[index]).elementAt(index2-2)}',
-                            style: TextStyle(fontSize: 80)),
-                      ),
-                    ),
-                  );
-                },
-                separatorBuilder: (BuildContext context, int index) {
-                  return const Divider();
-                },
+      body: Column(
+        children: <Widget>[
+          Container(
+            width: _width,
+            height: _height * .11,
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: Colors.black12,
+                  width: 1.0,
+                ),
               ),
-            );
-          },
-          separatorBuilder: (BuildContext context, int index) {
-            return const Divider();
-          },
-        ),
+              shape: BoxShape.rectangle,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: FittedBox(
+                child: Text(
+                  'Problems Encountered Last Round',
+                  style: Theme.of(context).textTheme.headline4,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+          ),
+          Container(
+            width: _width,
+            height: _height * .65,
+            child: ListView.separated(
+              itemCount: StaggeredNumbersState.problemIndices.length + 1,
+              itemBuilder: (BuildContext context, int index) {
+                return Container(
+                  height: _height * .1,
+                  child: ListView.separated(
+                    padding: const EdgeInsets.all(8),
+                    scrollDirection: Axis.horizontal,
+                    itemCount: (index == 0)
+                        ? 3
+                        : Database.getSolutions()
+                                .elementAt(StaggeredNumbersState
+                                    .problemIndices[index - 1])
+                                .length +
+                            2,
+                    itemBuilder: (BuildContext context, int index2) {
+                      return Container(
+                        width: (index2 == 0) ? _width / 6.5 : _width*.4,
+                        child: Center(
+                          child: (index == 0 && index2 == 0)
+                              ? Icon(
+                                  Icons.toys,
+                                  size: 40,
+                                )
+                              : (index == 0 && index2 == 1)
+                                  ? Text('Numbers',
+                                      style: TextStyle(fontSize: 25))
+                                  : (index == 0 && index2 == 2)
+                                      ? Text('Solutions',
+                                          style: TextStyle(fontSize: 25))
+                                      : (index2 == 0)
+                                          ? Text('#$index',
+                                              style: TextStyle(fontSize: 23))
+                                          : (index2 == 1)
+                                              ? Text(
+                                                  '${Database.writCombos().elementAt(StaggeredNumbersState.problemIndices[index - 1])}',
+                                                  style:
+                                                      TextStyle(fontSize: 21.5),
+                                                )
+                                              : Text(
+                                                  '${Database.getSolutions().elementAt(StaggeredNumbersState.problemIndices[index - 1]).elementAt(index2 - 2)}',
+                                                  style:
+                                                      TextStyle(fontSize: 21.5)),
+                        ),
+                      );
+                    },
+                    separatorBuilder: (BuildContext context, int index) {
+                      return const Divider();
+                    },
+                  ),
+                );
+              },
+              separatorBuilder: (BuildContext context, int index) {
+                return const Divider();
+              },
+            ),
+          ),
+          Container(
+            alignment: Alignment.topCenter,
+            decoration: BoxDecoration(
+              border: Border(
+                top: BorderSide(
+                  color: Colors.black12,
+                  width: 1.0,
+                ),
+              ),
+              shape: BoxShape.rectangle,
+            ),
+            height: _height * .13,
+            width: _width,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 10.0, left: 0, right: 0, bottom: 10.0),
+              child: FittedBox(
+                  child: Text(
+                'Scroll down for more questions\nScroll right for more solutions\n*Note: Some only have one solution',
+                style: TextStyle(height: 1.5, fontSize: 40),
+                textAlign: TextAlign.center,
+              )),
+            ),
+          ),
+        ],
       ),
     );
   }
 }
-

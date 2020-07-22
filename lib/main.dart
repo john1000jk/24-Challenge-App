@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:twenty_four_game/begin_screen.dart';
+import 'file:///C:/Users/john1/AndroidStudioProjects/twenty_four_game/lib/onboarding/onboarding.dart';
 import 'package:twenty_four_game/time_up.dart';
 import 'package:twenty_four_game/transitions.dart';
 import './home.dart';
@@ -7,6 +8,7 @@ import './time_trial.dart';
 import './normal.dart';
 import './how_to_play.dart';
 import './csv_reader.dart';
+import 'themes/styles.dart';
 
 const MainColor = const Color.fromRGBO(207, 232, 255, 1.0);
 
@@ -23,25 +25,13 @@ class MyApp extends StatelessWidget {
         });
       },
       child: MaterialApp(
-        theme: ThemeData(
-          primaryColor: Colors.blue,
-          accentColor: Colors.white,
-        ),
-        home: Scaffold(
-          appBar: AppBar(
-            title: Text("24 Challenge"),
-          ),
-          body: Home(),
-        ),
+        theme: AppTheme(),
+        home: HomeTwo(),
         initialRoute: '/',
-        routes: {
-          // When navigating to the "/timetrial" route, build the SecondScreen widget.
-          '/how_to_play': (context) => HowToPlay(),
-        },
         onGenerateRoute: (RouteSettings settings) {
           switch (settings.name) {
-            case '/':
-              return MaterialPageRoute(builder: (context)=> Home());
+            case '/home':
+              return FadeRoute(page: HomeTwo());
               break;
             case '/normal':
               return FadeRoute(page: Normal());
@@ -61,8 +51,11 @@ class MyApp extends StatelessWidget {
             case '/previous_q':
               return FadeRoute(page: AnsweredQuestions());
               break;
+            case '/how_to_play':
+              return FadeRoute(page: HowToPlay());
+              break;
           }
-          return MaterialPageRoute(builder: (context) => Home());
+          return MaterialPageRoute(builder: (context) => HomeTwo());
         },
       ),
     );

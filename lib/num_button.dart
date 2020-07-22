@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:twenty_four_game/staggered_numbers.dart';
+import 'package:twenty_four_game/themes/styles.dart';
 import './numbers.dart';
 import './operation.dart';
 
@@ -43,6 +44,9 @@ class _NumButtonState extends State<NumButton> {
               value = widget.parent.widget.numList[i] /
                   widget.parent.widget.numList[widget.index];
               widget.parent.addOperation(Operation(widget.index, 3, i));
+              if ((value.round() - value).abs() < .01) {
+                value = value.round().toDouble();
+              }
               break;
           }
           widget.parent.changeDisabledButtons(i, true);
@@ -60,7 +64,6 @@ class _NumButtonState extends State<NumButton> {
               widget.parent.createDialog(widget.parent.context);
               widget.parent.skipped = false;
               if (widget.parent is StaggeredNumbersState) {
-                StaggeredNumbersState.problemIndices.add(widget.parent.comboIndexS);
                 StaggeredNumbersState.numCorrect += 1;
                 StaggeredNumbersState.current += 10;
               }
@@ -107,7 +110,7 @@ class _NumButtonState extends State<NumButton> {
     return FlatButton(
       color: widget.parent.isSelected[widget.index]
       ? Color.fromRGBO(255, 222, 222, 1.0)
-      : Colors.white,
+      : AppTheme().accentColor,
       onPressed: _totalFunction(),
       child: Center(
           child: ConstrainedBox(
@@ -124,7 +127,7 @@ class _NumButtonState extends State<NumButton> {
                     : "",
                 style: TextStyle(
                   fontSize: 96,
-                  fontWeight: Theme.of(context).textTheme.headline1.fontWeight,
+                  fontWeight: FontWeight.w200,
                   color: Color.fromRGBO(71, 71, 71, 1.0),
                 ),
               ),
