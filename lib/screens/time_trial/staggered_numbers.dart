@@ -201,7 +201,7 @@ class StaggeredNumbersState extends NumbersState {
             ),
           ),
           Container(
-            height: (_height - 80 - (_height - 80) / 8 - _width * .9) / 2,
+            height: (_height - 85 - (_height - 80) / 8 - _width * .9) / 2,
             width: _width * .9,
             child: Row(
               children: <Widget>[
@@ -213,7 +213,7 @@ class StaggeredNumbersState extends NumbersState {
             ),
           ),
           Container(
-            height: (_height - 80 - (_height - 80) / 8 - _width * .9) / 2,
+            height: (_height - 85 - (_height - 80) / 8 - _width * .9) / 2,
             width: _width * .9,
             child: Row(
               children: <Widget>[
@@ -227,7 +227,7 @@ class StaggeredNumbersState extends NumbersState {
                             child: Text(
                               "UNDO",
                               style: TextStyle(
-                                  fontSize: 55, fontWeight: FontWeight.normal),
+                                  fontSize: 45, fontWeight: FontWeight.normal),
                             ),
                           )),
                     ),
@@ -248,7 +248,7 @@ class StaggeredNumbersState extends NumbersState {
                             child: Text(
                               "SKIP",
                               style: TextStyle(
-                                  fontSize: 55, fontWeight: FontWeight.normal),
+                                  fontSize: 45, fontWeight: FontWeight.normal),
                             ),
                           )),
                     ),

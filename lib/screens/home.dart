@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_circular_text/circular_text.dart';
+import 'package:twenty_four_game/themes/styles.dart';
 
 class HomeTwo extends StatefulWidget {
   @override
@@ -59,6 +60,7 @@ class _HomeTwoState extends State<HomeTwo> with TickerProviderStateMixin {
     }
 
     return Scaffold(
+      backgroundColor: AppTheme().accentColor,
       body: Container(
         width: _width,
         height: _height,

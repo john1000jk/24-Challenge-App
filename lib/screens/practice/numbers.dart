@@ -291,7 +291,7 @@ class NumbersState extends State<Numbers> {
             ),
           ),
           Container(
-            height: (_height-80-_width)/2,
+            height: (_height-90-_width)/2,
             child: Padding(
               padding: const EdgeInsets.only(left: 15.0, right: 15.0),
               child: Row(
@@ -305,7 +305,7 @@ class NumbersState extends State<Numbers> {
             ),
           ),
           Container(
-            height: (_height-80-_width)/2,
+            height: (_height-90-_width)/2,
             child: Row(
               children: <Widget>[
                 Expanded(
@@ -317,7 +317,7 @@ class NumbersState extends State<Numbers> {
                           child: FittedBox(
                             child: Text(
                               "UNDO",
-                              style: TextStyle(fontSize: 55, fontWeight: FontWeight.normal),
+                              style: TextStyle(fontSize: 50, fontWeight: FontWeight.normal),
                             ),
                           )),
                     ),
@@ -334,7 +334,7 @@ class NumbersState extends State<Numbers> {
                           child: FittedBox(
                             child: Text(
                               "SKIP",
-                              style: TextStyle(fontSize: 55, fontWeight: FontWeight.normal),
+                              style: TextStyle(fontSize: 50, fontWeight: FontWeight.normal),
                             ),
                           )),
                     ),

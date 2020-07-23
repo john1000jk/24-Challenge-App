@@ -87,11 +87,11 @@ class _OnboardPageState extends State<OnboardPage> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.symmetric(vertical: 18.0),
+                    padding: EdgeInsets.symmetric(vertical: _height/50),
                     child: RichText(
                       text: TextSpan(
                         style: Theme.of(context).textTheme.headline4.copyWith(
-                              fontSize: 20,
+                              fontSize: 18,
                           color: widget.pageModel.secondColor.withOpacity(.9),
 
                         ),

@@ -313,7 +313,7 @@ class AnsweredQuestions extends StatelessWidget {
         children: <Widget>[
           Container(
             width: _width,
-            height: _height * .11,
+            height: _height * .09,
             decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(
