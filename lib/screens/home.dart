@@ -59,23 +59,20 @@ class _HomeTwoState extends State<HomeTwo> with TickerProviderStateMixin {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('24 Challenge'),
-      ),
       body: Container(
         width: _width,
         height: _height,
         child: Column(
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.only(top: 20.0, bottom: 5.0),
+              padding: const EdgeInsets.only(top: 60.0, bottom: 5.0),
               child: Stack(
                 alignment: Alignment.center,
                 children: <Widget>[
                   Container(
                     padding: EdgeInsets.all(4.0),
-                    width: _width * .575,
-                    height: _width * .575,
+                    width: _width * .6,
+                    height: _width * .6,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: Colors.blue,
@@ -144,8 +141,8 @@ class _HomeTwoState extends State<HomeTwo> with TickerProviderStateMixin {
                     ),
                   ),
                   Container(
-                    width: _width *.39,
-                    height: _width*.39,
+                    width: _width *.41,
+                    height: _width*.41,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: Colors.white,
