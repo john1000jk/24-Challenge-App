@@ -144,8 +144,8 @@ class _HomeTwoState extends State<HomeTwo> with TickerProviderStateMixin {
                     ),
                   ),
                   Container(
-                    width: _width *.4,
-                    height: _width*.4,
+                    width: _width *.39,
+                    height: _width*.39,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: Colors.white,
@@ -205,7 +205,6 @@ class _HomeTwoState extends State<HomeTwo> with TickerProviderStateMixin {
               width: 275,
               height: 75,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(100),
                 gradient: LinearGradient(
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
