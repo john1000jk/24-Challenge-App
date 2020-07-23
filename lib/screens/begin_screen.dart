@@ -1,18 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class BeginScreen extends StatefulWidget {
-  final String route;
-  BeginScreen(this.route);
-
-  @override
-  _BeginState createState() => _BeginState();
-}
-
-class _BeginState extends State<BeginScreen> with TickerProviderStateMixin {
-
-  bool reveal = true;
-  bool done = false;
+class BeginScreen extends StatelessWidget {
+  final String _route;
+  BeginScreen(this._route);
 
   @override
   Widget build(BuildContext context) {
@@ -35,8 +26,7 @@ class _BeginState extends State<BeginScreen> with TickerProviderStateMixin {
                 ),
                 color: Colors.lightBlueAccent,
                 onPressed: () {
-                  reveal = true;
-                  Navigator.pushReplacementNamed(context, widget.route);
+                  Navigator.pushReplacementNamed(context, _route);
                 },
                 child: ConstrainedBox(
                   constraints: BoxConstraints.expand(),

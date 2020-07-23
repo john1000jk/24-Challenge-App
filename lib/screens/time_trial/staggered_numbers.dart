@@ -260,6 +260,5 @@ class StaggeredNumbersState extends NumbersState {
         ],
       ),
     );
-    // TODO: implement build
   }
 }
