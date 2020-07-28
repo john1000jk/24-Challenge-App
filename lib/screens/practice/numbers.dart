@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:twenty_four_game/audio_player.dart';
 import '../../csv_reader.dart';
 import '../../buttons/num_button.dart';
 import '../../buttons/op_button.dart';
@@ -44,11 +45,32 @@ class NumbersState extends State<Numbers> {
     _previousOperations.removeLast();
   }
 
+  @override
+  void dispose() {
+    if (AudioP.canPlay) {
+      AudioP.audioPlayer.stop();
+    }
+    super.dispose();
+  }
+
   List _operators = [
-    Icon(Icons.add),
-    Icon(Icons.remove),
-    Icon(Icons.close),
-    Image.asset("assets/division.png")
+    Icon(
+      Icons.add,
+      size: 500,
+    ),
+    Icon(
+      Icons.remove,
+      size: 500,
+    ),
+    Icon(
+      Icons.close,
+      size: 500,
+    ),
+    Image.asset(
+      "assets/division.png",
+      height: 500,
+      width: 500,
+    )
   ];
 
   List<Color> _opColors = [
@@ -126,8 +148,11 @@ class NumbersState extends State<Numbers> {
       _disabledButtons = [false, false, false, false];
       _previousOperations = [];
       comboIndexS = Random().nextInt(Database.getCombos().length);
-      for (int i = 0; i < Database.getCombos().elementAt(comboIndexS).length; i++) {
-        widget.changeNumList(i, Database.getCombos().elementAt(comboIndexS).elementAt(i));
+      for (int i = 0;
+          i < Database.getCombos().elementAt(comboIndexS).length;
+          i++) {
+        widget.changeNumList(
+            i, Database.getCombos().elementAt(comboIndexS).elementAt(i));
       }
     });
   }
@@ -142,17 +167,13 @@ class NumbersState extends State<Numbers> {
         enterSepSols += (i + 1).toString() + ":  ";
         enterSepSols += Database.getSolutions().elementAt(comboIndexS)[i];
         if (i != 5 &&
-            i !=
-                Database.getSolutions().elementAt(comboIndexS).length -
-                    1) {
+            i != Database.getSolutions().elementAt(comboIndexS).length - 1) {
           enterSepSols += '\n';
         }
       } else {
         enterSepSols2 += (i + 1).toString() + ":  ";
-        enterSepSols2 +=
-            Database.getSolutions().elementAt(comboIndexS)[i];
-        if (i !=
-            Database.getSolutions().elementAt(comboIndexS).length - 1) {
+        enterSepSols2 += Database.getSolutions().elementAt(comboIndexS)[i];
+        if (i != Database.getSolutions().elementAt(comboIndexS).length - 1) {
           enterSepSols2 += '\n';
         }
       }
@@ -170,16 +191,14 @@ class NumbersState extends State<Numbers> {
                   decoration: BoxDecoration(
                       border: Border(
                           bottom: BorderSide(
-                            width: 2.0,
-                            color: Colors.black26,
-                          )
-                      )
-                  ),
+                    width: 2.0,
+                    color: Colors.black26,
+                  ))),
                   child: FittedBox(
                     child: Center(
                         child: Text(
                       "Solutions:",
-                          style: Theme.of(context).textTheme.headline3,
+                      style: Theme.of(context).textTheme.headline3,
                     )),
                   ),
                 ),
@@ -203,16 +222,18 @@ class NumbersState extends State<Numbers> {
                             ),
                             (enterSepSols2.length != 0)
                                 ? Column(
-                              children: <Widget>[
-                                    (enterSepSols2.length != 0)
-                                    ? Container(
-                                        child: Text(
-                                        enterSepSols2,
-                                        style: TextStyle(fontSize: 20, height: 1.5),
-                                      ))
-                                    : Container(),
-                                  ],
-                            ) : Container(),
+                                    children: <Widget>[
+                                      (enterSepSols2.length != 0)
+                                          ? Container(
+                                              child: Text(
+                                              enterSepSols2,
+                                              style: TextStyle(
+                                                  fontSize: 20, height: 1.5),
+                                            ))
+                                          : Container(),
+                                    ],
+                                  )
+                                : Container(),
                           ],
                         ),
                       ),
@@ -256,42 +277,50 @@ class NumbersState extends State<Numbers> {
 
     return Container(
       width: _width,
-      height: _height-80,
+      height: _height - 80,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Container(
-            height: _width/2,
+            height: _width / 2,
             child: Row(
               children: <Widget>[
-                Expanded(child: Padding(
-                  padding: const EdgeInsets.only(left: 20.0, top: 20.0, bottom: 5.0, right: 5.0),
+                Expanded(
+                    child: Padding(
+                  padding: const EdgeInsets.only(
+                      left: 20.0, top: 20.0, bottom: 5.0, right: 5.0),
                   child: NumButton(0, this),
                 )),
-                Expanded(child: Padding(
-                  padding: const EdgeInsets.only(left: 5.0, top: 20.0, bottom: 5.0, right: 20.0),
+                Expanded(
+                    child: Padding(
+                  padding: const EdgeInsets.only(
+                      left: 5.0, top: 20.0, bottom: 5.0, right: 20.0),
                   child: NumButton(1, this),
                 )),
               ],
             ),
           ),
           Container(
-            height: _width/2,
+            height: _width / 2,
             child: Row(
               children: <Widget>[
-                Expanded(child: Padding(
-                  padding: const EdgeInsets.only(left: 20.0, top: 5.0, bottom: 20.0, right: 5.0),
+                Expanded(
+                    child: Padding(
+                  padding: const EdgeInsets.only(
+                      left: 20.0, top: 5.0, bottom: 20.0, right: 5.0),
                   child: NumButton(2, this),
                 )),
-                Expanded(child: Padding(
-                  padding: const EdgeInsets.only(left: 5.0, top: 5.0, bottom: 20.0, right: 20.0),
+                Expanded(
+                    child: Padding(
+                  padding: const EdgeInsets.only(
+                      left: 5.0, top: 5.0, bottom: 20.0, right: 20.0),
                   child: NumButton(3, this),
                 )),
               ],
             ),
           ),
           Container(
-            height: (_height-90-_width)/2,
+            height: (_height - 90 - _width) / 2,
             child: Padding(
               padding: const EdgeInsets.only(left: 15.0, right: 15.0),
               child: Row(
@@ -305,19 +334,22 @@ class NumbersState extends State<Numbers> {
             ),
           ),
           Container(
-            height: (_height-90-_width)/2,
+            height: (_height - 90 - _width) / 2,
             child: Row(
               children: <Widget>[
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 10.0, left: 10.0),
                     child: SizedBox.expand(
-                      child: FlatButton(
+                      child: MaterialButton(
+                          elevation: 0,
+                          enableFeedback: false,
                           onPressed: undoFunction(),
                           child: FittedBox(
                             child: Text(
                               "UNDO",
-                              style: TextStyle(fontSize: 50, fontWeight: FontWeight.normal),
+                              style: TextStyle(
+                                  fontSize: 50, fontWeight: FontWeight.normal),
                             ),
                           )),
                     ),
@@ -327,24 +359,27 @@ class NumbersState extends State<Numbers> {
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 10.0, right: 10.0),
                     child: SizedBox.expand(
-                      child: FlatButton(
+                      child: MaterialButton(
+                          elevation: 0,
+                          enableFeedback: false,
                           onPressed: () {
                             createDialog(context);
                           },
                           child: FittedBox(
                             child: Text(
                               "SKIP",
-                              style: TextStyle(fontSize: 50, fontWeight: FontWeight.normal),
+                              style: TextStyle(
+                                  fontSize: 50, fontWeight: FontWeight.normal),
                             ),
                           )),
                     ),
                   ),
-                ),              ],
+                ),
+              ],
             ),
           )
         ],
       ),
     );
-
   }
 }

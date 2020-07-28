@@ -107,7 +107,9 @@ class _NumButtonState extends State<NumButton> {
   @override
   Widget build(BuildContext context) {
 
-    return FlatButton(
+    return MaterialButton(
+      enableFeedback: false,
+      elevation: 0,
       color: widget.parent.isSelected[widget.index]
       ? Color.fromRGBO(255, 222, 222, 1.0)
       : AppTheme().accentColor,

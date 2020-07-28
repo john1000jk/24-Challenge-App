@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:twenty_four_game/audio_player.dart';
 
 class BeginScreen extends StatelessWidget {
   final String _route;
@@ -25,8 +26,10 @@ class BeginScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(100),
                 ),
                 color: Colors.lightBlueAccent,
-                onPressed: () {
-                  Navigator.pushReplacementNamed(context, _route);
+                onPressed: () async {
+                  await AudioP.loadMusic().then((value) {
+                    Navigator.pushReplacementNamed(context, _route);
+                  });
                 },
                 child: ConstrainedBox(
                   constraints: BoxConstraints.expand(),

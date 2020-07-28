@@ -32,7 +32,9 @@ class _OpButtonState extends State<OpButton> {
         ),
         child: FittedBox(
           fit: BoxFit.contain,
-          child: IconButton(
+          child: MaterialButton(
+            enableFeedback: false,
+            elevation: 0,
             onPressed: () => widget.parent.setState(
               () {
                 for (int i = 0; i < widget.parent.opSelected.length; i++) {
@@ -45,8 +47,7 @@ class _OpButtonState extends State<OpButton> {
                 }
               },
             ),
-            icon: widget.parent.operators[widget.index],
-            iconSize: widget.index != 3 ? 500 : 500,
+            child: widget.parent.operators[widget.index],
           ),
         ),
       ),

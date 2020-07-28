@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:twenty_four_game/screens/begin_screen.dart';
+import 'package:twenty_four_game/screens/settings.dart';
 import 'package:twenty_four_game/screens/time_trial/time_up.dart';
 import 'package:twenty_four_game/transitions.dart';
 import 'screens/home.dart';
@@ -17,11 +19,13 @@ void main() {
 
 class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     return StatefulWrapper(
       onInit: () async {
-        await Database.fetchVenueDatabase().then((result) {
-          Normal().build(context);
-        });
+        Database.fetchVenueDatabase();
       },
       child: MaterialApp(
         theme: AppTheme(),
@@ -39,10 +43,12 @@ class MyApp extends StatelessWidget {
               return FadeRoute(page: TimeTrial());
               break;
             case '/begin_screen1':
-              return MaterialPageRoute(builder: (context) => BeginScreen('/time_trial'));
+              return MaterialPageRoute(
+                  builder: (context) => BeginScreen('/time_trial'));
               break;
             case '/begin_screen2':
-              return MaterialPageRoute(builder: (context) => BeginScreen('/normal'));
+              return MaterialPageRoute(
+                  builder: (context) => BeginScreen('/normal'));
               break;
             case '/time_up':
               return FadeRoute(page: AnimationStation());
@@ -52,6 +58,9 @@ class MyApp extends StatelessWidget {
               break;
             case '/how_to_play':
               return FadeRoute(page: HowToPlay());
+              break;
+            case '/settings':
+              return FadeRoute(page: Settings());
               break;
           }
           return MaterialPageRoute(builder: (context) => HomeTwo());
@@ -64,7 +73,9 @@ class MyApp extends StatelessWidget {
 class StatefulWrapper extends StatefulWidget {
   final Function onInit;
   final Widget child;
+
   const StatefulWrapper({@required this.onInit, @required this.child});
+
   @override
   _StatefulWrapperState createState() => _StatefulWrapperState();
 }
@@ -72,11 +83,12 @@ class StatefulWrapper extends StatefulWidget {
 class _StatefulWrapperState extends State<StatefulWrapper> {
   @override
   void initState() {
-    if(widget.onInit != null) {
+    if (widget.onInit != null) {
       widget.onInit();
     }
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return widget.child;
