@@ -113,13 +113,22 @@ class NumbersState extends State<Numbers> {
     switch (o.opIndex) {
       case 0:
         value = widget.numList[o.changedIndex] - widget.numList[o.operandIndex];
+        if ((value.round() - value).abs() < .01) {
+          value = value.round().toDouble();
+        }
         break;
       case 1:
         value = -1 * widget.numList[o.changedIndex] +
             widget.numList[o.operandIndex];
+        if ((value.round() - value).abs() < .01) {
+          value = value.round().toDouble();
+        }
         break;
       case 2:
         value = widget.numList[o.changedIndex] / widget.numList[o.operandIndex];
+        if ((value.round() - value).abs() < .01) {
+          value = value.round().toDouble();
+        }
         break;
       case 3:
         value = 1 /

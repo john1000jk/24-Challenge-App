@@ -7,6 +7,7 @@ import '../../csv_reader.dart';
 import 'package:flutter/material.dart';
 import 'package:twenty_four_game/screens/time_trial/staggered_numbers.dart';
 import 'package:confetti/confetti.dart';
+import 'package:launch_review/launch_review.dart';
 
 class AnimationStation extends StatefulWidget {
   @override
@@ -139,7 +140,7 @@ class AnimationStationState extends State<AnimationStation>
                     child: IconButton(
                       icon: Icon(Icons.thumb_up),
                       iconSize: 70,
-                      onPressed: null,
+                      onPressed: () => LaunchReview.launch(),
                     ),
                   ),
                   Spacer(),
@@ -290,7 +291,6 @@ class MultiAnimation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return AnimatedBuilder(
       builder: _buildAnim,
       animation: controller,
@@ -301,48 +301,25 @@ class MultiAnimation extends StatelessWidget {
 class AnsweredQuestions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    print(StaggeredNumbersState.problemIndices);
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
-    // TODO: implement build
+    List<bool> isSelected = List(StaggeredNumbersState.problemIndices.length);
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Previous Questions'),
+        title: Text('Problems Encountered Last Round'),
       ),
       body: Column(
         children: <Widget>[
           Container(
             width: _width,
-            height: _height * .09,
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                  color: Colors.black12,
-                  width: 1.0,
-                ),
-              ),
-              shape: BoxShape.rectangle,
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: FittedBox(
-                child: Text(
-                  'Problems Encountered Last Round',
-                  style: Theme.of(context).textTheme.headline4,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ),
-          ),
-          Container(
-            width: _width,
-            height: _height * .65,
+            height: _height * .74,
             child: ListView.separated(
               itemCount: StaggeredNumbersState.problemIndices.length + 1,
               itemBuilder: (BuildContext context, int index) {
                 return Container(
                   height: _height * .1,
-                  child: ListView.separated(
+                  child: ListView.builder(
                     padding: const EdgeInsets.all(8),
                     scrollDirection: Axis.horizontal,
                     itemCount: (index == 0)
@@ -354,7 +331,7 @@ class AnsweredQuestions extends StatelessWidget {
                             2,
                     itemBuilder: (BuildContext context, int index2) {
                       return Container(
-                        width: (index2 == 0) ? _width / 6.5 : _width*.4,
+                        width: (index2 == 0) ? _width / 6.5 : _width * .4,
                         child: Center(
                           child: (index == 0 && index2 == 0)
                               ? Icon(
@@ -378,14 +355,12 @@ class AnsweredQuestions extends StatelessWidget {
                                                 )
                                               : Text(
                                                   '${Database.getSolutions().elementAt(StaggeredNumbersState.problemIndices[index - 1]).elementAt(index2 - 2)}',
-                                                  style:
-                                                      TextStyle(fontSize: 21.5)),
+                                                  style: TextStyle(
+                                                      fontSize: 21.5)),
                         ),
                       );
                     },
-                    separatorBuilder: (BuildContext context, int index) {
-                      return const Divider();
-                    },
+                    controller: ScrollController(initialScrollOffset: 0),
                   ),
                 );
               },
@@ -408,7 +383,8 @@ class AnsweredQuestions extends StatelessWidget {
             height: _height * .13,
             width: _width,
             child: Padding(
-              padding: const EdgeInsets.only(top: 10.0, left: 0, right: 0, bottom: 10.0),
+              padding: const EdgeInsets.only(
+                  top: 10.0, left: 0, right: 0, bottom: 10.0),
               child: FittedBox(
                   child: Text(
                 'Scroll down for more questions\nScroll right for more solutions\n*Note: Some only have one solution',

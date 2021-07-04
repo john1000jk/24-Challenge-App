@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "865780213768",
+    "firebase_url": "https://challenge-5bdda.firebaseio.com",
+    "project_id": "challenge-5bdda",
+    "storage_bucket": "challenge-5bdda.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:865780213768:android:1c8508fc33346c5bb949bd",
+        "android_client_info": {
+          "package_name": "com.example.twenty_four_game"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "865780213768-spo21kakei55acrhvnmmc53hoce1rift.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCLfbgj-1QDCmlRWI_c4nNMDJbzgK1Lf5k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "865780213768-spo21kakei55acrhvnmmc53hoce1rift.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

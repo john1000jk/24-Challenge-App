@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_circular_text/circular_text.dart';
 import 'package:twenty_four_game/audio_player.dart';
 import 'package:twenty_four_game/themes/styles.dart';
-
+import 'package:twenty_four_game/services/auth.dart';
 import '../background_painter.dart';
 
 class HomeTwo extends StatefulWidget {
+  final AuthService _authService = AuthService();
   @override
   State<StatefulWidget> createState() {
     return _HomeTwoState();
@@ -13,8 +14,9 @@ class HomeTwo extends StatefulWidget {
 }
 
 class _HomeTwoState extends State<HomeTwo> with TickerProviderStateMixin {
-  List<String> _buttonNames = ['Time Trial', 'Practice', 'How to Play'];
-  List<String> _buttonRoutes = ['/begin_screen1', '/normal', '/how_to_play'];
+  List<String> _buttonNames = ['Time Trial', 'Multiplayer', 'Practice', 'How to Play'];
+  List<String> _buttonRoutes = ['/begin_screen1', '/multiplayer', '/normal', '/how_to_play'];
+  bool _isClicked = false;
   List<Color> primeColors = [
     Color.fromRGBO(29, 242, 242, 1.0),
     Color.fromRGBO(29, 168, 242, 1.0),
@@ -26,13 +28,13 @@ class _HomeTwoState extends State<HomeTwo> with TickerProviderStateMixin {
     Color.fromRGBO(89, 29, 242, 1.0),
   ];
 
-  List<AnimationController> _controllers = new List(3);
-  List<double> _buttonScales = new List(3);
+  List<AnimationController> _controllers = new List(4);
+  List<double> _buttonScales = new List(4);
 
   @override
   void initState() {
     super.initState();
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 4; i++) {
       _buttonScales[i] = 1.0;
       _controllers[i] = AnimationController(
         vsync: this,
@@ -57,6 +59,7 @@ class _HomeTwoState extends State<HomeTwo> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
+    _isClicked = false;
     for (int i = 0; i < 3; i++) {
       _buttonScales[i] = 1 - _controllers[i].value;
     }
@@ -86,8 +89,8 @@ class _HomeTwoState extends State<HomeTwo> with TickerProviderStateMixin {
                       children: <Widget>[
                         Container(
                           padding: EdgeInsets.all(4.0),
-                          width: _width * .6,
-                          height: _width * .6,
+                          width: _height * .3,
+                          height: _height * .3,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: Colors.blue,
@@ -156,8 +159,8 @@ class _HomeTwoState extends State<HomeTwo> with TickerProviderStateMixin {
                           ),
                         ),
                         Container(
-                          width: _width * .41,
-                          height: _width * .41,
+                          width: _height * .208,
+                          height: _height * .208,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: Colors.white,
@@ -182,9 +185,9 @@ class _HomeTwoState extends State<HomeTwo> with TickerProviderStateMixin {
                   _animatedButton(1),
                   Spacer(),
                   _animatedButton(2),
-                  Spacer(
-                    flex: 3,
-                  ),
+                  Spacer(),
+                  _animatedButton(3),
+                  Spacer(),
                 ],
               ),
             ),
@@ -212,6 +215,20 @@ class _HomeTwoState extends State<HomeTwo> with TickerProviderStateMixin {
                 ),
               ),
             ),
+            Positioned(
+              left: 5,
+              top: 25,
+              child: Container(
+                height: 50,
+                child: FlatButton.icon(
+                    onPressed: () async {
+                      await widget._authService.signOut();
+                    },
+                    icon: Icon(Icons.person),
+                    label: Text('Logout', style: TextStyle(fontSize: 20),)
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -221,15 +238,21 @@ class _HomeTwoState extends State<HomeTwo> with TickerProviderStateMixin {
   Widget _animatedButton(int index) => GestureDetector(
         onTapUp: (TapUpDetails details) {
           if (_buttonNames[index] == 'Practice') {
-            _controllers[index].reverse().then((value) => AudioP.loadMusic()
-                .then((value) =>
-                    Navigator.pushNamed(context, _buttonRoutes[index])));
+            _controllers[index].reverse().then((value) {
+              if (!_isClicked) {
+                _isClicked = true;
+                AudioP.loadMusic()
+                    .then((value) {
+                  Navigator.pushNamed(context, _buttonRoutes[index]);
+              }
+                );}});
           } else {
             _controllers[index].reverse().then(
                 (value) => Navigator.pushNamed(context, _buttonRoutes[index]));
           }
         },
         onTapDown: (TapDownDetails details) {
+          _isClicked = true;
           _controllers[index].forward();
         },
         onTapCancel: () {
@@ -240,8 +263,6 @@ class _HomeTwoState extends State<HomeTwo> with TickerProviderStateMixin {
                 _controllers[index].reverse();
               },
             );
-            Navigator.pushNamed(context, _buttonRoutes[index]);
-            _controllers[index].reverse();
           } else {
             Navigator.pushNamed(context, _buttonRoutes[index]);
             _controllers[index].reverse();
