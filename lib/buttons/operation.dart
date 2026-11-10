@@ -1,7 +1,7 @@
 class Operation {
-  int _changedIndex;
-  int _opIndex;
-  int _operandIndex;
+  final int _changedIndex;
+  final int _opIndex;
+  final int _operandIndex;
 
   Operation(this._changedIndex, this._opIndex, this._operandIndex);
 

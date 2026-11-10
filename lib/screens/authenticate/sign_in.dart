@@ -5,8 +5,8 @@ import 'package:twenty_four_game/shared/loading.dart';
 
 class SignIn extends StatefulWidget {
 
-  final Function toggleView;
-  SignIn({this.toggleView});
+  final VoidCallback toggleView;
+  const SignIn({super.key, required this.toggleView});
 
   @override
   _SignInState createState() => _SignInState();
@@ -32,7 +32,8 @@ class _SignInState extends State<SignIn> {
         elevation: 0.0,
         title: Text('Sign In'),
         actions: <Widget>[
-          FlatButton.icon(
+          TextButton.icon(
+              style: TextButton.styleFrom(foregroundColor: Colors.white),
               onPressed: () => widget.toggleView(),
               icon: Icon(Icons.person),
               label: Text('Sign up')
@@ -48,7 +49,7 @@ class _SignInState extends State<SignIn> {
               SizedBox(height: 20.0),
               TextFormField(
                 decoration: textInputDecoration.copyWith(hintText: 'email'),
-                validator: (val) => val.isEmpty ? 'Enter an email' : null,
+                validator: (val) => (val ?? '').isEmpty ? 'Enter an email' : null,
                 onChanged: (val) {
                   setState(() => email = val);
                 },
@@ -57,20 +58,20 @@ class _SignInState extends State<SignIn> {
               TextFormField(
                 decoration: textInputDecoration.copyWith(hintText: 'password'),
                 obscureText: true,
-                validator: (val) => val.length < 6 ? 'Password must be 6+ chars' : null,
+                validator: (val) => (val ?? '').length < 6 ? 'Password must be 6+ chars' : null,
                 onChanged: (val) {
                   setState(() => password = val);
                 },
               ),
               SizedBox(height: 20.0),
-              RaisedButton(
-                color: Colors.redAccent,
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.redAccent),
                 child: Text(
                   'Sign In',
                   style: TextStyle(color: Colors.white),
                 ),
                 onPressed: () async {
-                  if (_formKey.currentState.validate()) {
+                  if (_formKey.currentState!.validate()) {
                     setState(() => loading = true);
                     dynamic result = await _authService.signInWithEmailAndPassword(email, password);
                     if (result == null) {

@@ -2,38 +2,39 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/user.dart';
 
 class DatabaseService {
-
   final String uid;
-  DatabaseService({this.uid});
+  DatabaseService({required this.uid});
 
-  final CollectionReference userCollection = Firestore.instance.collection('users');
+  final CollectionReference<Map<String, dynamic>> userCollection =
+      FirebaseFirestore.instance.collection('users');
 
-  Future updateUserData(String username, String nickname, int highScore) async {
-    return await userCollection.document(uid).setData({
+  Future<void> updateUserData(
+      String username, String nickname, int highScore) async {
+    await userCollection.doc(uid).set({
       'username': username,
       'nickname': nickname,
       'highScore': highScore,
     });
   }
 
-  Future updateScore(int highScore) async {
-    return await userCollection.document(uid).updateData({
+  Future<void> updateScore(int highScore) async {
+    await userCollection.doc(uid).update({
       'highScore': highScore,
     });
   }
 
-  UserData _userDataFromSnapshot(DocumentSnapshot snapshot) {
+  UserData _userDataFromSnapshot(
+      DocumentSnapshot<Map<String, dynamic>> snapshot) {
+    final data = snapshot.data() ?? {};
     return UserData(
       uid: uid,
-      username: snapshot.data['username'],
-      nickname: snapshot.data['nickname'],
-      highScore: snapshot.data['highScore'],
+      username: data['username'] as String? ?? '',
+      nickname: data['nickname'] as String? ?? '',
+      highScore: data['highScore'] as int? ?? 0,
     );
   }
 
   Stream<UserData> get userData {
-    return userCollection.document(uid).snapshots()
-        .map(_userDataFromSnapshot);
+    return userCollection.doc(uid).snapshots().map(_userDataFromSnapshot);
   }
-
 }

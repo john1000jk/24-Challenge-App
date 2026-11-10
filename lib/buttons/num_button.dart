@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:twenty_four_game/screens/time_trial/staggered_numbers.dart';
 import 'package:twenty_four_game/themes/styles.dart';
@@ -9,7 +8,7 @@ class NumButton extends StatefulWidget {
   final int index;
   final NumbersState parent;
 
-  NumButton(this.index, this.parent);
+  const NumButton(this.index, this.parent, {super.key});
 
   @override
   State<StatefulWidget> createState() {
@@ -20,7 +19,7 @@ class NumButton extends StatefulWidget {
 class _NumButtonState extends State<NumButton> {
 
   void _performOperation(int opIndex) {
-    double value;
+    double value = 0;
     for (int i = 0; i < widget.parent.isSelected.length; i++) {
       if (i != widget.index) {
         if (widget.parent.isSelected[i]) {
@@ -74,7 +73,7 @@ class _NumButtonState extends State<NumButton> {
     }
   }
 
-  Function _totalFunction() {
+  VoidCallback? _totalFunction() {
     if (widget.parent.disabledButtons[widget.index]) {
       return null;
     } else {
@@ -112,7 +111,7 @@ class _NumButtonState extends State<NumButton> {
       elevation: 0,
       color: widget.parent.isSelected[widget.index]
       ? Color.fromRGBO(255, 222, 222, 1.0)
-      : AppTheme().accentColor,
+      : accentColor,
       onPressed: _totalFunction(),
       child: Center(
           child: ConstrainedBox(

@@ -1,3 +1,5 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -16,64 +18,61 @@ import 'screens/how_to_play.dart';
 import './csv_reader.dart';
 import 'themes/styles.dart';
 
+const mainColor = Color.fromRGBO(207, 232, 255, 1.0);
 
-const MainColor = const Color.fromRGBO(207, 232, 255, 1.0);
-
-void main() {
-  runApp(MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
   Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
-    return StreamProvider<User>.value(
+    return StreamProvider<AppUser?>.value(
       value: AuthService().user,
+      initialData: null,
       child: StatefulWrapper(
-        onInit: () async {
+        onInit: () {
           Database.fetchVenueDatabase();
         },
         child: MaterialApp(
-          theme: AppTheme(),
-          home: Wrapper(),
-          initialRoute: '/',
+          theme: appTheme(),
+          home: const Wrapper(),
           onGenerateRoute: (RouteSettings settings) {
             switch (settings.name) {
               case '/home':
-                return FadeRoute(page: HomeTwo());
-                break;
+                return FadeRoute(page: const HomeTwo());
               case '/normal':
-                return FadeRoute(page: Normal());
-                break;
+                return FadeRoute(page: const Normal());
               case '/time_trial':
                 return FadeRoute(page: TimeTrial());
-                break;
               case '/begin_screen1':
                 return MaterialPageRoute(
-                    builder: (context) => BeginScreen('/time_trial'));
-                break;
+                    builder: (context) => const BeginScreen('/time_trial'));
               case '/begin_screen2':
                 return MaterialPageRoute(
-                    builder: (context) => BeginScreen('/normal'));
-                break;
+                    builder: (context) => const BeginScreen('/normal'));
               case '/time_up':
-                return FadeRoute(page: AnimationStation());
-                break;
+                return FadeRoute(page: const AnimationStation());
               case '/previous_q':
-                return FadeRoute(page: AnsweredQuestions());
-                break;
+                return FadeRoute(page: const AnsweredQuestions());
               case '/how_to_play':
-                return FadeRoute(page: HowToPlay());
-                break;
+                return FadeRoute(page: const HowToPlay());
               case '/settings':
-                return FadeRoute(page: Settings());
-                break;
+                return FadeRoute(page: const Settings());
               case '/multiplayer':
-                return FadeRoute(page: Multiplayer());
+                return FadeRoute(page: const Multiplayer());
             }
-            return MaterialPageRoute(builder: (context) => HomeTwo());
+            return MaterialPageRoute(builder: (context) => const HomeTwo());
           },
         ),
       ),
@@ -82,22 +81,20 @@ class MyApp extends StatelessWidget {
 }
 
 class StatefulWrapper extends StatefulWidget {
-  final Function onInit;
+  final VoidCallback onInit;
   final Widget child;
 
-  const StatefulWrapper({@required this.onInit, @required this.child});
+  const StatefulWrapper({super.key, required this.onInit, required this.child});
 
   @override
-  _StatefulWrapperState createState() => _StatefulWrapperState();
+  State<StatefulWrapper> createState() => _StatefulWrapperState();
 }
 
 class _StatefulWrapperState extends State<StatefulWrapper> {
   @override
   void initState() {
-    if (widget.onInit != null) {
-      widget.onInit();
-    }
     super.initState();
+    widget.onInit();
   }
 
   @override

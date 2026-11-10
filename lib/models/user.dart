@@ -1,9 +1,8 @@
-class User {
-  
+// Named AppUser so it doesn't clash with firebase_auth's User class.
+class AppUser {
   final String uid;
-  
-  User({this.uid});
 
+  AppUser({required this.uid});
 }
 
 class UserData {
@@ -11,6 +10,11 @@ class UserData {
   final String username;
   final String nickname;
   final int highScore;
-  
-  UserData({this.uid, this.username, this.nickname, this.highScore});
+
+  UserData({
+    required this.uid,
+    required this.username,
+    required this.nickname,
+    required this.highScore,
+  });
 }

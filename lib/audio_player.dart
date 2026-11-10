@@ -1,13 +1,18 @@
 import 'package:audioplayers/audioplayers.dart';
-import 'package:audioplayers/audio_cache.dart';
 
 class AudioP {
-  static AudioPlayer audioPlayer;
+  static final AudioPlayer audioPlayer = AudioPlayer();
   static bool canPlay = true;
 
   static Future<void> loadMusic() async {
     if (canPlay) {
-      audioPlayer = await AudioCache().loop('music/bensound-theelevatorbossanova.mp3');
+      await audioPlayer.setReleaseMode(ReleaseMode.loop);
+      await audioPlayer
+          .play(AssetSource('music/bensound-theelevatorbossanova.mp3'));
     }
+  }
+
+  static Future<void> stop() async {
+    await audioPlayer.stop();
   }
 }

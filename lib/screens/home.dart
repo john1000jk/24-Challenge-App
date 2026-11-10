@@ -6,7 +6,8 @@ import 'package:twenty_four_game/services/auth.dart';
 import '../background_painter.dart';
 
 class HomeTwo extends StatefulWidget {
-  final AuthService _authService = AuthService();
+  const HomeTwo({super.key});
+
   @override
   State<StatefulWidget> createState() {
     return _HomeTwoState();
@@ -14,6 +15,7 @@ class HomeTwo extends StatefulWidget {
 }
 
 class _HomeTwoState extends State<HomeTwo> with TickerProviderStateMixin {
+  final AuthService _authService = AuthService();
   List<String> _buttonNames = ['Time Trial', 'Multiplayer', 'Practice', 'How to Play'];
   List<String> _buttonRoutes = ['/begin_screen1', '/multiplayer', '/normal', '/how_to_play'];
   bool _isClicked = false;
@@ -28,23 +30,23 @@ class _HomeTwoState extends State<HomeTwo> with TickerProviderStateMixin {
     Color.fromRGBO(89, 29, 242, 1.0),
   ];
 
-  List<AnimationController> _controllers = new List(4);
-  List<double> _buttonScales = new List(4);
+  late final List<AnimationController> _controllers;
+  final List<double> _buttonScales = List.filled(4, 1.0);
 
   @override
   void initState() {
     super.initState();
-    for (int i = 0; i < 4; i++) {
-      _buttonScales[i] = 1.0;
-      _controllers[i] = AnimationController(
+    _controllers = List.generate(
+      4,
+      (_) => AnimationController(
         vsync: this,
-        duration: Duration(milliseconds: 100),
+        duration: const Duration(milliseconds: 100),
         lowerBound: 0,
         upperBound: .1,
       )..addListener(() {
           setState(() {});
-        });
-    }
+        }),
+    );
   }
 
   @override
@@ -65,7 +67,7 @@ class _HomeTwoState extends State<HomeTwo> with TickerProviderStateMixin {
     }
 
     return Scaffold(
-      backgroundColor: AppTheme().accentColor,
+      backgroundColor: accentColor,
       body: Container(
         width: _width,
         height: _height,
@@ -220,9 +222,9 @@ class _HomeTwoState extends State<HomeTwo> with TickerProviderStateMixin {
               top: 25,
               child: Container(
                 height: 50,
-                child: FlatButton.icon(
+                child: TextButton.icon(
                     onPressed: () async {
-                      await widget._authService.signOut();
+                      await _authService.signOut();
                     },
                     icon: Icon(Icons.person),
                     label: Text('Logout', style: TextStyle(fontSize: 20),)
@@ -296,7 +298,7 @@ class _HomeTwoState extends State<HomeTwo> with TickerProviderStateMixin {
               child: Center(
                 child: Text(
                   _buttonNames[index],
-                  style: Theme.of(context).textTheme.headline4.copyWith(
+                  style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                     color: Colors.indigo,
                     fontSize: 36,
                     fontWeight: FontWeight.bold,

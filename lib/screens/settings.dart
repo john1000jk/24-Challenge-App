@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import '../audio_player.dart';
 
 class Settings extends StatefulWidget {
+  const Settings({super.key});
+
   @override
   State<StatefulWidget> createState() {
     return _SettingsState();
@@ -36,7 +38,7 @@ class _SettingsState extends State<Settings> {
                     child: FittedBox(
                       child: Text(
                         'Music',
-                        style: Theme.of(context).textTheme.headline2,
+                        style: Theme.of(context).textTheme.displayMedium!,
                       ),
                     ),
                   ),

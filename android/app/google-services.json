@@ -3,7 +3,7 @@
     "project_number": "865780213768",
     "firebase_url": "https://challenge-5bdda.firebaseio.com",
     "project_id": "challenge-5bdda",
-    "storage_bucket": "challenge-5bdda.appspot.com"
+    "storage_bucket": "challenge-5bdda.firebasestorage.app"
   },
   "client": [
     {
