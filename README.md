@@ -14,3 +14,7 @@ Most of the other apps for playing the 24 game are overly cluttered or missing k
 
 <img src="https://github.com/john1000jk/twenty_four_game/raw/master/screenshots/special_icons.png" width=300> &#8195; &#8195;
 <img src="https://github.com/john1000jk/twenty_four_game/raw/master/screenshots/time_trial_ex.png" width=300>
+
+## Credits
+
+The puzzles and their solutions (`assets/24Solutions.csv`) come from [4nums.com](https://www.4nums.com).

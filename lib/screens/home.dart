@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_circular_text/circular_text.dart';
+import 'package:provider/provider.dart';
+import 'package:twenty_four_game/models/user.dart';
 import 'package:twenty_four_game/audio_player.dart';
 import 'package:twenty_four_game/themes/styles.dart';
 import 'package:twenty_four_game/services/auth.dart';
@@ -217,20 +219,23 @@ class _HomeTwoState extends State<HomeTwo> with TickerProviderStateMixin {
                 ),
               ),
             ),
-            Positioned(
-              left: 5,
-              top: 25,
-              child: Container(
-                height: 50,
-                child: TextButton.icon(
-                    onPressed: () async {
-                      await _authService.signOut();
-                    },
-                    icon: Icon(Icons.person),
-                    label: Text('Logout', style: TextStyle(fontSize: 20),)
+            // Signing in is only needed for Multiplayer, so Logout only
+            // shows while someone is signed in.
+            if (Provider.of<AppUser?>(context) != null)
+              Positioned(
+                left: 5,
+                top: 25,
+                child: SizedBox(
+                  height: 50,
+                  child: TextButton.icon(
+                      onPressed: () async {
+                        await _authService.signOut();
+                      },
+                      icon: const Icon(Icons.person),
+                      label: const Text('Logout', style: TextStyle(fontSize: 20),)
+                  ),
                 ),
               ),
-            ),
           ],
         ),
       ),
