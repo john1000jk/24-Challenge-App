@@ -8,6 +8,9 @@ import '../../csv_reader.dart';
 class TimeTrial extends StatelessWidget {
   final int comboIndex = Random().nextInt(Database.getCombos().length);
 
+  // Not const: each new screen picks a random puzzle.
+  TimeTrial({super.key});
+
   @override
   Widget build(BuildContext context) {
     Database.resetValues();

@@ -15,12 +15,12 @@ class OnboardPage extends StatefulWidget {
 class _OnboardPageState extends State<OnboardPage> {
   @override
   Widget build(BuildContext context) {
-    double _width = MediaQuery.of(context).size.width;
-    double _height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
 
     return Container(
-      width: _width,
-      height: _height,
+      width: width,
+      height: height,
       color: widget.pageModel.primeColor,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -29,10 +29,10 @@ class _OnboardPageState extends State<OnboardPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.only(top: _height/9, left: (widget.pageModel.secondPath != '') ? 15.0: 0),
-                child: Container(
-                  height: (widget.pageModel.thirdPath == '') ? _height / 3 : _height/6,
-                  width: (widget.pageModel.secondPath == '') ? _width*.8 : (_width-30)/2,
+                padding: EdgeInsets.only(top: height/9, left: (widget.pageModel.secondPath != '') ? 15.0: 0),
+                child: SizedBox(
+                  height: (widget.pageModel.thirdPath == '') ? height / 3 : height/6,
+                  width: (widget.pageModel.secondPath == '') ? width*.8 : (width-30)/2,
                   child: FittedBox(
                     child: Image.asset(widget.pageModel.imagePath,
                     ),
@@ -40,10 +40,10 @@ class _OnboardPageState extends State<OnboardPage> {
                 ),
               ),
               (widget.pageModel.secondPath != '') ? Padding(
-                padding: EdgeInsets.only(top: _height/9, right: 15.0),
-                child: Container(
-                  height: (widget.pageModel.thirdPath == '') ? _height / 3 : _height/6,
-                  width: (_width - 30)/2,
+                padding: EdgeInsets.only(top: height/9, right: 15.0),
+                child: SizedBox(
+                  height: (widget.pageModel.thirdPath == '') ? height / 3 : height/6,
+                  width: (width - 30)/2,
                   child: FittedBox(
                     child: Image.asset(widget.pageModel.secondPath,
                     ),
@@ -52,9 +52,9 @@ class _OnboardPageState extends State<OnboardPage> {
               ) : Container(),
             ],
           ),
-          (widget.pageModel.thirdPath != '') ? Container(
-            height: _height/6,
-            width: _width,
+          (widget.pageModel.thirdPath != '') ? SizedBox(
+            height: height/6,
+            width: width,
             child: FittedBox(
               child: Image.asset(widget.pageModel.thirdPath,
               ),
@@ -63,53 +63,51 @@ class _OnboardPageState extends State<OnboardPage> {
 
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30.0),
-            child: Container(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    widget.pageModel.caption,
-                    style: Theme.of(context).textTheme.displaySmall!.copyWith(
-                      color: widget.pageModel.secondColor.withOpacity(.8),
-                      fontSize: 28,
-                        ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  widget.pageModel.caption,
+                  style: Theme.of(context).textTheme.displaySmall!.copyWith(
+                    color: widget.pageModel.secondColor.withValues(alpha: .8),
+                    fontSize: 28,
+                      ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: height/60, bottom: height/120),
+                  child: Text(
+                    widget.pageModel.message,
+                    style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                      fontSize: 36,
+                      color: widget.pageModel.secondColor,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(top: _height/60, bottom: _height/120),
-                    child: Text(
-                      widget.pageModel.message,
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: height/50),
+                  child: RichText(
+                    text: TextSpan(
                       style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                        fontSize: 36,
-                        color: widget.pageModel.secondColor,
-                        fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                        color: widget.pageModel.secondColor.withValues(alpha: .9),
+
                       ),
+                      children: [
+                        TextSpan(
+                          text: widget.pageModel.longMessage,
+                        ),
+                        (widget.pageModel.pageNumber != 4) ? WidgetSpan(
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 4.0),
+                            child: Icon(Icons.chevron_right, color: widget.pageModel.secondColor,),
+                          )
+                        ) : WidgetSpan(child: Padding(padding: EdgeInsets.zero,)),
+                      ],
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: _height/50),
-                    child: RichText(
-                      text: TextSpan(
-                        style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                              fontSize: 18,
-                          color: widget.pageModel.secondColor.withOpacity(.9),
-
-                        ),
-                        children: [
-                          TextSpan(
-                            text: widget.pageModel.longMessage,
-                          ),
-                          (widget.pageModel.pageNumber != 4) ? WidgetSpan(
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 4.0),
-                              child: Icon(Icons.chevron_right, color: widget.pageModel.secondColor,),
-                            )
-                          ) : WidgetSpan(child: Padding(padding: EdgeInsets.zero,)),
-                        ],
-                      ),
-                    ),
-                  )
-                ],
-              ),
+                )
+              ],
             ),
           )
         ],

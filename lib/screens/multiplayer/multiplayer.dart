@@ -32,9 +32,7 @@ class LobbyPortal extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return Scaffold(
-          body: Container(
-            child: Center(child: Text(Provider.of<UserData?>(context)?.nickname ?? '')),
-          ),
-        );
+      body: Center(child: Text(Provider.of<UserData?>(context)?.nickname ?? '')),
+    );
   }
 }

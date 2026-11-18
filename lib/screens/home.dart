@@ -18,8 +18,8 @@ class HomeTwo extends StatefulWidget {
 
 class _HomeTwoState extends State<HomeTwo> with TickerProviderStateMixin {
   final AuthService _authService = AuthService();
-  List<String> _buttonNames = ['Time Trial', 'Multiplayer', 'Practice', 'How to Play'];
-  List<String> _buttonRoutes = ['/begin_screen1', '/multiplayer', '/normal', '/how_to_play'];
+  final List<String> _buttonNames = ['Time Trial', 'Multiplayer', 'Practice', 'How to Play'];
+  final List<String> _buttonRoutes = ['/begin_screen1', '/multiplayer', '/normal', '/how_to_play'];
   bool _isClicked = false;
   List<Color> primeColors = [
     Color.fromRGBO(29, 242, 242, 1.0),
@@ -61,8 +61,8 @@ class _HomeTwoState extends State<HomeTwo> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    double _width = MediaQuery.of(context).size.width;
-    double _height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     _isClicked = false;
     for (int i = 0; i < 3; i++) {
       _buttonScales[i] = 1 - _controllers[i].value;
@@ -70,16 +70,16 @@ class _HomeTwoState extends State<HomeTwo> with TickerProviderStateMixin {
 
     return Scaffold(
       backgroundColor: accentColor,
-      body: Container(
-        width: _width,
-        height: _height,
+      body: SizedBox(
+        width: width,
+        height: height,
         child: Stack(
           children: [
             CustomPaint(
               painter: BackgroundPainter(),
-              child: Container(
-                width: _width,
-                height: _height,
+              child: SizedBox(
+                width: width,
+                height: height,
               ),
             ),
             Align(
@@ -93,8 +93,8 @@ class _HomeTwoState extends State<HomeTwo> with TickerProviderStateMixin {
                       children: <Widget>[
                         Container(
                           padding: EdgeInsets.all(4.0),
-                          width: _height * .3,
-                          height: _height * .3,
+                          width: height * .3,
+                          height: height * .3,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: Colors.blue,
@@ -163,8 +163,8 @@ class _HomeTwoState extends State<HomeTwo> with TickerProviderStateMixin {
                           ),
                         ),
                         Container(
-                          width: _height * .208,
-                          height: _height * .208,
+                          width: height * .208,
+                          height: height * .208,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: Colors.white,
@@ -198,7 +198,7 @@ class _HomeTwoState extends State<HomeTwo> with TickerProviderStateMixin {
             Positioned(
               right: 15,
               top: 25,
-              child: Container(
+              child: SizedBox(
                 width: 50,
                 height: 50,
                 child: Ink(
@@ -250,6 +250,7 @@ class _HomeTwoState extends State<HomeTwo> with TickerProviderStateMixin {
                 _isClicked = true;
                 AudioP.loadMusic()
                     .then((value) {
+                  if (!mounted) return;
                   Navigator.pushNamed(context, _buttonRoutes[index]);
               }
                 );}});
@@ -266,6 +267,7 @@ class _HomeTwoState extends State<HomeTwo> with TickerProviderStateMixin {
           if (_buttonNames[index] == 'Practice') {
             AudioP.loadMusic().then(
               (value) {
+                if (!mounted) return;
                 Navigator.pushNamed(context, _buttonRoutes[index]);
                 _controllers[index].reverse();
               },

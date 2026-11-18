@@ -88,21 +88,21 @@ class StaggeredNumbersState extends NumbersState {
 
   @override
   Widget build(BuildContext context) {
-    double _width = MediaQuery.of(context).size.width;
-    double _height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     return Builder(
       builder: (context) {
-        return Container(
-          height: _height - 80,
-          width: _width,
+        return SizedBox(
+          height: height - 80,
+          width: width,
           child: Column(
             children: <Widget>[
-              Container(
-                height: (_height - 80) / 8,
+              SizedBox(
+                height: (height - 80) / 8,
                 child: Row(
                   children: <Widget>[
                     Container(
-                      width: _width / 40,
+                      width: width / 40,
                     ),
                     Expanded(
                       child: Padding(
@@ -122,7 +122,7 @@ class StaggeredNumbersState extends NumbersState {
                       ),
                     ),
                     SizedBox(
-                      width: _width / 20,
+                      width: width / 20,
                     ),
                     Expanded(
                         child: Padding(
@@ -139,7 +139,7 @@ class StaggeredNumbersState extends NumbersState {
                       ),
                     ),
                     SizedBox(
-                      width: _width / 20,
+                      width: width / 20,
                     ),
                     Expanded(
                       child: Padding(
@@ -156,14 +156,14 @@ class StaggeredNumbersState extends NumbersState {
                       ),
                     ),
                     SizedBox(
-                      width: _width / 20,
+                      width: width / 20,
                     ),
                   ],
                 ),
               ),
-              Container(
-                height: _width * .45,
-                width: _width * .9,
+              SizedBox(
+                height: width * .45,
+                width: width * .9,
                 child: Padding(
                   padding: const EdgeInsets.only(top: 8.0),
                   child: Row(
@@ -182,9 +182,9 @@ class StaggeredNumbersState extends NumbersState {
                   ),
                 ),
               ),
-              Container(
-                height: _width * .45,
-                width: _width * .9,
+              SizedBox(
+                height: width * .45,
+                width: width * .9,
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: Row(
@@ -203,9 +203,9 @@ class StaggeredNumbersState extends NumbersState {
                   ),
                 ),
               ),
-              Container(
-                height: (_height - 85 - (_height - 80) / 8 - _width * .9) / 2,
-                width: _width * .9,
+              SizedBox(
+                height: (height - 85 - (height - 80) / 8 - width * .9) / 2,
+                width: width * .9,
                 child: Row(
                   children: <Widget>[
                     Expanded(child: FittedBox(child: OpButton(0, this))),
@@ -215,9 +215,9 @@ class StaggeredNumbersState extends NumbersState {
                   ],
                 ),
               ),
-              Container(
-                height: (_height - 85 - (_height - 80) / 8 - _width * .9) / 2,
-                width: _width * .9,
+              SizedBox(
+                height: (height - 85 - (height - 80) / 8 - width * .9) / 2,
+                width: width * .9,
                 child: Row(
                   children: <Widget>[
                     Expanded(
