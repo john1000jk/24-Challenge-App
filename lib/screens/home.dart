@@ -20,7 +20,9 @@ class _HomeTwoState extends State<HomeTwo> with TickerProviderStateMixin {
   final AuthService _authService = AuthService();
   final List<String> _buttonNames = ['Time Trial', 'Multiplayer', 'Practice', 'How to Play'];
   final List<String> _buttonRoutes = ['/begin_screen1', '/multiplayer', '/normal', '/how_to_play'];
-  bool _isClicked = false;
+  /// True while a button is opening its screen, so a double tap can't open
+  /// it twice. Cleared when the player comes back to this screen.
+  bool _navigating = false;
   List<Color> primeColors = [
     Color.fromRGBO(29, 242, 242, 1.0),
     Color.fromRGBO(29, 168, 242, 1.0),
@@ -63,8 +65,7 @@ class _HomeTwoState extends State<HomeTwo> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-    _isClicked = false;
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < _controllers.length; i++) {
       _buttonScales[i] = 1 - _controllers[i].value;
     }
 
@@ -242,41 +243,34 @@ class _HomeTwoState extends State<HomeTwo> with TickerProviderStateMixin {
     );
   }
 
+  /// Plays the button's release animation, then opens its screen.
+  Future<void> _openScreen(int index) async {
+    if (_navigating) return;
+    _navigating = true;
+    try {
+      await _controllers[index].reverse();
+      if (_buttonNames[index] == 'Practice') {
+        try {
+          await AudioP.loadMusic();
+        } catch (e) {
+          debugPrint('Could not start music: $e');
+        }
+      }
+      if (!mounted) return;
+      // Completes when the player returns to the home screen.
+      await Navigator.pushNamed(context, _buttonRoutes[index]);
+    } finally {
+      _navigating = false;
+    }
+  }
+
   Widget _animatedButton(int index) => GestureDetector(
-        onTapUp: (TapUpDetails details) {
-          if (_buttonNames[index] == 'Practice') {
-            _controllers[index].reverse().then((value) {
-              if (!_isClicked) {
-                _isClicked = true;
-                AudioP.loadMusic()
-                    .then((value) {
-                  if (!mounted) return;
-                  Navigator.pushNamed(context, _buttonRoutes[index]);
-              }
-                );}});
-          } else {
-            _controllers[index].reverse().then(
-                (value) => Navigator.pushNamed(context, _buttonRoutes[index]));
-          }
-        },
         onTapDown: (TapDownDetails details) {
-          _isClicked = true;
           _controllers[index].forward();
         },
-        onTapCancel: () {
-          if (_buttonNames[index] == 'Practice') {
-            AudioP.loadMusic().then(
-              (value) {
-                if (!mounted) return;
-                Navigator.pushNamed(context, _buttonRoutes[index]);
-                _controllers[index].reverse();
-              },
-            );
-          } else {
-            Navigator.pushNamed(context, _buttonRoutes[index]);
-            _controllers[index].reverse();
-          }
-        },
+        onTapUp: (TapUpDetails details) => _openScreen(index),
+        // Finger slid off the button: just restore it, don't open anything.
+        onTapCancel: () => _controllers[index].reverse(),
         child: Transform.scale(
           scale: _buttonScales[index],
           child: Padding(
