@@ -23,16 +23,6 @@ class _HomeTwoState extends State<HomeTwo> with TickerProviderStateMixin {
   /// True while a button is opening its screen, so a double tap can't open
   /// it twice. Cleared when the player comes back to this screen.
   bool _navigating = false;
-  List<Color> primeColors = [
-    Color.fromRGBO(29, 242, 242, 1.0),
-    Color.fromRGBO(29, 168, 242, 1.0),
-    Color.fromRGBO(29, 89, 242, 1.0),
-  ];
-  List<Color> secondColors = [
-    Color.fromRGBO(29, 168, 242, 1.0),
-    Color.fromRGBO(29, 89, 242, 1.0),
-    Color.fromRGBO(89, 29, 242, 1.0),
-  ];
 
   late final List<AnimationController> _controllers;
   final List<double> _buttonScales = List.filled(4, 1.0);
