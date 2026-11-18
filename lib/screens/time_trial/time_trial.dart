@@ -28,7 +28,10 @@ class TimeTrial extends StatelessWidget {
         title: Text(
             'Time Trial Screen'),
       ),
-      body: StaggeredNumbers(Database.getCombos().elementAt(comboIndex), comboIndex),
+      body: StaggeredNumbers(
+          // A copy: the board edits its numbers as you play.
+          List.of(Database.getCombos().elementAt(comboIndex)),
+          comboIndex),
     );
   }
 
