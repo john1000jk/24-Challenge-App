@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:twenty_four_game/models/user.dart';
+import 'package:twenty_four_game/screens/authenticate/authenticate.dart';
 import 'package:twenty_four_game/services/database.dart';
 
 class Multiplayer extends StatelessWidget {
@@ -11,8 +12,13 @@ class Multiplayer extends StatelessWidget {
 
     final user = Provider.of<AppUser?>(context);
 
+    // Multiplayer is the only feature that needs an account.
+    if (user == null) {
+      return const Authenticate();
+    }
+
     return StreamProvider<UserData?>.value(
-      value: DatabaseService(uid: user!.uid).userData,
+      value: DatabaseService(uid: user.uid).userData,
       initialData: null,
       child: const LobbyPortal(),
     );

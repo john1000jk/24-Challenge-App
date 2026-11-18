@@ -7,7 +7,6 @@ import 'package:twenty_four_game/screens/begin_screen.dart';
 import 'package:twenty_four_game/screens/multiplayer/multiplayer.dart';
 import 'package:twenty_four_game/screens/settings.dart';
 import 'package:twenty_four_game/screens/time_trial/time_up.dart';
-import 'package:twenty_four_game/screens/wrapper.dart';
 import 'package:twenty_four_game/services/auth.dart';
 import 'package:twenty_four_game/transitions.dart';
 import 'models/user.dart';
@@ -46,7 +45,7 @@ class MyApp extends StatelessWidget {
         },
         child: MaterialApp(
           theme: appTheme(),
-          home: const Wrapper(),
+          home: const HomeTwo(),
           onGenerateRoute: (RouteSettings settings) {
             switch (settings.name) {
               case '/home':
