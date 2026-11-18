@@ -1,29 +1,37 @@
 import 'package:flutter/material.dart';
 
-ThemeData AppTheme() {
+/// The old theme used `accentColor: Colors.white`, which no longer exists.
+/// Code that read `AppTheme().accentColor` now uses this constant.
+const Color accentColor = Colors.white;
+
+// Text styles were named headline1-4 in older Flutter; they map to
+// displayLarge, displayMedium, displaySmall and headlineMedium now.
+ThemeData appTheme() {
   return ThemeData(
+    useMaterial3: false,
     primarySwatch: Colors.blue,
-    accentColor: Colors.white,
-    textTheme: TextTheme(
-      headline1: TextStyle(
+    colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue)
+        .copyWith(secondary: accentColor),
+    textTheme: const TextTheme(
+      displayLarge: TextStyle(
         fontFamily: 'Montserrat',
         fontSize: 24,
         fontWeight: FontWeight.w200,
         color: Color.fromRGBO(65, 87, 148, 1.0),
       ),
-      headline2: TextStyle(
+      displayMedium: TextStyle(
         fontFamily: 'Montserrat',
         fontSize: 40,
         fontWeight: FontWeight.w400,
         color: Colors.black87,
       ),
-      headline3: TextStyle(
+      displaySmall: TextStyle(
         fontFamily: 'Montserrat',
         fontSize: 24,
         fontWeight: FontWeight.normal,
         color: Colors.black87,
       ),
-      headline4: TextStyle(
+      headlineMedium: TextStyle(
         fontFamily: 'Montserrat',
         fontSize: 30,
         fontWeight: FontWeight.w500,

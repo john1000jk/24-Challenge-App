@@ -3,6 +3,8 @@ import 'package:twenty_four_game/screens/authenticate/register.dart';
 import 'package:twenty_four_game/screens/authenticate/sign_in.dart';
 
 class Authenticate extends StatefulWidget {
+  const Authenticate({super.key});
+
   @override
   _AuthenticateState createState() => _AuthenticateState();
 }
@@ -15,6 +17,7 @@ class _AuthenticateState extends State<Authenticate> {
       showSignIn = !showSignIn;
     });
   }
+  @override
   Widget build(BuildContext context) {
     if (showSignIn) {
       return SignIn(toggleView: toggleView,);

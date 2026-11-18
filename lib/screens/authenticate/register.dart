@@ -4,8 +4,8 @@ import 'package:twenty_four_game/shared/constants.dart';
 
 class Register extends StatefulWidget {
 
-  final Function toggleView;
-  Register({this.toggleView});
+  final VoidCallback toggleView;
+  const Register({super.key, required this.toggleView});
 
   @override
   _RegisterState createState() => _RegisterState();
@@ -31,7 +31,8 @@ class _RegisterState extends State<Register> {
         elevation: 0.0,
         title: Text('Sign Up'),
         actions: <Widget>[
-          FlatButton.icon(
+          TextButton.icon(
+              style: TextButton.styleFrom(foregroundColor: Colors.white),
               onPressed: () => widget.toggleView(),
               icon: Icon(Icons.person),
               label: Text('Sign in')
@@ -47,7 +48,7 @@ class _RegisterState extends State<Register> {
               SizedBox(height: 20.0),
               TextFormField(
                 decoration: textInputDecoration.copyWith(hintText: 'email'),
-                validator: (val) => val.isEmpty ? 'Enter an email' : null,
+                validator: (val) => (val ?? '').isEmpty ? 'Enter an email' : null,
                 onChanged: (val) {
                   setState(() => email = val);
                 },
@@ -56,20 +57,20 @@ class _RegisterState extends State<Register> {
               TextFormField(
                 decoration: textInputDecoration.copyWith(hintText: 'password'),
                 obscureText: true,
-                validator: (val) => val.length < 6 ? 'Password must be 6+ chars' : null,
+                validator: (val) => (val ?? '').length < 6 ? 'Password must be 6+ chars' : null,
                 onChanged: (val) {
                   setState(() => password = val);
                 },
               ),
               SizedBox(height: 20.0),
-              RaisedButton(
-                color: Colors.redAccent,
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.redAccent),
                 child: Text(
                   'Register',
                   style: TextStyle(color: Colors.white),
                 ),
                 onPressed: () async {
-                  if (_formKey.currentState.validate()) {
+                  if (_formKey.currentState!.validate()) {
                     setState(() => loading = true);
                     dynamic result = await _authService.registerWithEmailAndPassword(email, password);
                     if (result == null) {

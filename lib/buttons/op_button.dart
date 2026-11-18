@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:twenty_four_game/themes/styles.dart';
 import '../screens/practice/numbers.dart';
@@ -7,7 +6,7 @@ class OpButton extends StatefulWidget {
   final int index;
   final NumbersState parent;
 
-  OpButton(this.index, this.parent);
+  const OpButton(this.index, this.parent, {super.key});
 
   @override
   State<StatefulWidget> createState() {
@@ -23,11 +22,11 @@ class _OpButtonState extends State<OpButton> {
       child: Ink(
         decoration: BoxDecoration(
           border: widget.parent.opSelected[widget.index]
-              ? Border.all(color: AppTheme().accentColor, width: 0.0)
-              : Border.all(color: AppTheme().accentColor, width: 0.0),
+              ? Border.all(color: accentColor, width: 0.0)
+              : Border.all(color: accentColor, width: 0.0),
           color: widget.parent.opSelected[widget.index]
           ? widget.parent.opColors[widget.index]
-          : AppTheme().accentColor,
+          : accentColor,
           shape: BoxShape.rectangle,
         ),
         child: FittedBox(

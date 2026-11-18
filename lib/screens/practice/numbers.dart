@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:twenty_four_game/audio_player.dart';
 import '../../csv_reader.dart';
@@ -15,11 +14,11 @@ class Numbers extends StatefulWidget {
 
   List<double> get numList => _numList;
 
-  changeNumList(int index, double value) {
+  void changeNumList(int index, double value) {
     _numList[index] = value;
   }
 
-  Numbers(this._numList, this.comboIndex);
+  const Numbers(this._numList, this.comboIndex, {super.key});
 
   @override
   State<StatefulWidget> createState() {
@@ -33,7 +32,7 @@ class NumbersState extends State<Numbers> {
   List<bool> _disabledButtons = [false, false, false, false];
   List<Operation> _previousOperations = [];
   bool skipped = true;
-  int comboIndexS;
+  late int comboIndexS;
 
   List<Operation> get previousOperations => _previousOperations;
 
@@ -47,13 +46,11 @@ class NumbersState extends State<Numbers> {
 
   @override
   void dispose() {
-    if (AudioP.canPlay) {
-      AudioP.audioPlayer.stop();
-    }
+    AudioP.stop();
     super.dispose();
   }
 
-  List _operators = [
+  final List<Widget> _operators = [
     Icon(
       Icons.add,
       size: 500,
@@ -73,7 +70,7 @@ class NumbersState extends State<Numbers> {
     )
   ];
 
-  List<Color> _opColors = [
+  final List<Color> _opColors = [
     Color.fromRGBO(255, 233, 204, 1.0),
     Color.fromRGBO(176, 255, 226, 1.0),
     Color.fromRGBO(194, 225, 255, 1.0),
@@ -82,7 +79,7 @@ class NumbersState extends State<Numbers> {
 
   List<Color> get opColors => _opColors;
 
-  List get operators => _operators;
+  List<Widget> get operators => _operators;
 
   List<bool> get disabledButtons => _disabledButtons;
 
@@ -109,7 +106,7 @@ class NumbersState extends State<Numbers> {
   }
 
   void reverseOperation(Operation o) {
-    double value;
+    double value = 0;
     switch (o.opIndex) {
       case 0:
         value = widget.numList[o.changedIndex] - widget.numList[o.operandIndex];
@@ -149,7 +146,7 @@ class NumbersState extends State<Numbers> {
     widget.changeNumList(o.changedIndex, value);
   }
 
-  reset() {
+  void reset() {
     setState(() {
       Database.resetValues();
       _isSelected = [false, false, false, false];
@@ -166,7 +163,7 @@ class NumbersState extends State<Numbers> {
     });
   }
 
-  createDialog(BuildContext context) {
+  Future<void> createDialog(BuildContext context) {
     String enterSepSols = '';
     String enterSepSols2 = '';
     for (int i = 0;
@@ -207,7 +204,7 @@ class NumbersState extends State<Numbers> {
                     child: Center(
                         child: Text(
                       "Solutions:",
-                      style: Theme.of(context).textTheme.headline3,
+                      style: Theme.of(context).textTheme.displaySmall!,
                     )),
                   ),
                 ),
@@ -270,7 +267,7 @@ class NumbersState extends State<Numbers> {
     });
   }
 
-  Function undoFunction() {
+  VoidCallback? undoFunction() {
     if (previousOperations.isEmpty) {
       return null;
     } else {

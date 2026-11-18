@@ -1,15 +1,16 @@
 import 'dart:math';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/scheduler.dart';
 
 import '../../csv_reader.dart';
 import 'package:flutter/material.dart';
 import 'package:twenty_four_game/screens/time_trial/staggered_numbers.dart';
 import 'package:confetti/confetti.dart';
-import 'package:launch_review/launch_review.dart';
+import 'package:in_app_review/in_app_review.dart';
 
 class AnimationStation extends StatefulWidget {
+  const AnimationStation({super.key});
+
   @override
   State<StatefulWidget> createState() {
     return AnimationStationState();
@@ -18,10 +19,9 @@ class AnimationStation extends StatefulWidget {
 
 class AnimationStationState extends State<AnimationStation>
     with TickerProviderStateMixin {
-  ConfettiController _controller;
-  AnimationController _animationController;
+  late final ConfettiController _controller;
+  late final AnimationController _animationController;
   bool _isAnimDisposed = false;
-  Animation<double> animation;
 
   @override
   void initState() {
@@ -54,7 +54,7 @@ class AnimationStationState extends State<AnimationStation>
         }
       });
     } on Exception {
-      print('Canceled');
+      debugPrint('Canceled');
     }
   }
 
@@ -99,7 +99,7 @@ class AnimationStationState extends State<AnimationStation>
                   child: Text(
                     'Your time is UP!\nFinal Score: ${StaggeredNumbersState.numCorrect}',
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.headline2,
+                    style: Theme.of(context).textTheme.displayMedium!,
                   ),
                 ),
               ),
@@ -140,7 +140,7 @@ class AnimationStationState extends State<AnimationStation>
                     child: IconButton(
                       icon: Icon(Icons.thumb_up),
                       iconSize: 70,
-                      onPressed: () => LaunchReview.launch(),
+                      onPressed: () => InAppReview.instance.requestReview(),
                     ),
                   ),
                   Spacer(),
@@ -158,7 +158,7 @@ class AnimationStationState extends State<AnimationStation>
 }
 
 class MultiAnimation extends StatelessWidget {
-  MultiAnimation({Key key, this.controller})
+  MultiAnimation({super.key, required this.controller})
       : opacity = Tween<double>(
           begin: 0.0,
           end: 1.0,
@@ -261,8 +261,7 @@ class MultiAnimation extends StatelessWidget {
               curve: Curves.fastOutSlowIn,
             ),
           ),
-        ),
-        super(key: key);
+        );
 
   final Animation<double> controller;
   final Animation<double> opacity;
@@ -270,8 +269,7 @@ class MultiAnimation extends StatelessWidget {
   final Animation<double> translateY;
   final Animation<double> scale;
 
-  @override
-  Widget _buildAnim(BuildContext context, Widget child) {
+  Widget _buildAnim(BuildContext context, Widget? child) {
     return Container(
       child: AnimatedContainer(
         duration: Duration(milliseconds: 2500),
@@ -279,7 +277,7 @@ class MultiAnimation extends StatelessWidget {
           opacity: opacity.value,
           child: Text(
             '24!',
-            style: Theme.of(context).textTheme.headline2,
+            style: Theme.of(context).textTheme.displayMedium!,
           ),
         ),
         transform:
@@ -299,11 +297,12 @@ class MultiAnimation extends StatelessWidget {
 }
 
 class AnsweredQuestions extends StatelessWidget {
+  const AnsweredQuestions({super.key});
+
   @override
   Widget build(BuildContext context) {
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
-    List<bool> isSelected = List(StaggeredNumbersState.problemIndices.length);
 
     return Scaffold(
       appBar: AppBar(

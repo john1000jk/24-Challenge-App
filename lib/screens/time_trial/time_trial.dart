@@ -12,7 +12,7 @@ class TimeTrial extends StatelessWidget {
   Widget build(BuildContext context) {
     Database.resetValues();
     return Scaffold(
-      backgroundColor: AppTheme().accentColor,
+      backgroundColor: accentColor,
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),

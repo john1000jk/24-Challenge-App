@@ -1,23 +1,19 @@
 import 'dart:async';
+
 import 'dart:math';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:twenty_four_game/audio_player.dart';
-import 'package:twenty_four_game/models/user.dart';
 import 'package:twenty_four_game/screens/practice/numbers.dart';
-import 'package:twenty_four_game/services/database.dart';
+import 'package:twenty_four_game/services/high_score.dart';
 import '../../buttons/num_button.dart';
 import '../../buttons/op_button.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class StaggeredNumbers extends Numbers {
-  StaggeredNumbers(List<double> numList, int comboIndex)
-      : super(numList, comboIndex);
+  const StaggeredNumbers(super.numList, super.comboIndex, {super.key});
 
-  final route = '/time_trial';
+  @override
+  String get route => '/time_trial';
 
   @override
   State<StatefulWidget> createState() {
@@ -29,10 +25,8 @@ class StaggeredNumbersState extends NumbersState {
   static int numCorrect = 0;
   static int current = 120;
   static List<int> problemIndices = [];
-  User user;
-
-  // int _highScore = 0;
-  Timer _countdownTimer;
+  int _highScore = 0;
+  Timer? _countdownTimer;
   bool _timerDone = false;
 
   void startTimer() {
@@ -42,7 +36,7 @@ class StaggeredNumbersState extends NumbersState {
           current--;
         } else {
           _timerDone = true;
-          _countdownTimer.cancel();
+          timer.cancel();
           Navigator.pushReplacementNamed(context, '/time_up');
         }
       });
@@ -50,7 +44,7 @@ class StaggeredNumbersState extends NumbersState {
   }
 
   @override
-  reset() {
+  void reset() {
     super.reset();
     problemIndices.add(comboIndexS);
     if (_timerDone) {
@@ -60,23 +54,10 @@ class StaggeredNumbersState extends NumbersState {
   }
 
   @override
-  createDialog(BuildContext context) async {
-    // SharedPreferences preferences = await SharedPreferences.getInstance();
-    // DatabaseService(uid: user.uid).updateScore(max())
-    Firestore.instance.runTransaction((transaction) async {
-      DocumentSnapshot snapshot = await transaction.get(
-        Firestore.instance.collection('users').document(user.uid)
-      );
-      int curr = snapshot.data['highScore'];
-      if (numCorrect > curr) {
-        DatabaseService(uid: user.uid).updateScore(numCorrect);
-      }
-    });
-    _countdownTimer.cancel();
+  Future<void> createDialog(BuildContext context) async {
+    _countdownTimer?.cancel();
     _timerDone = true;
-    super.createDialog(context);
-    // _highScore = max(preferences.getInt('highScore') ?? 0, numCorrect);
-    // preferences.setInt('highScore', _highScore);
+    await super.createDialog(context);
   }
 
   @override
@@ -84,26 +65,24 @@ class StaggeredNumbersState extends NumbersState {
     super.initState();
     problemIndices = [];
     problemIndices.add(comboIndexS);
-    // _loadHighScore();
     numCorrect = 0;
     current = 120;
+    _loadHighScore();
     startTimer();
   }
 
-  // Future<void> _loadHighScore() async {
-  //   // SharedPreferences preferences = await SharedPreferences.getInstance();
-  //   setState(() {
-  //     _highScore = (preferences.getInt('highScore') ?? 0);
-  //   });
-  // }
+  Future<void> _loadHighScore() async {
+    final best = await HighScore.load();
+    if (mounted) setState(() => _highScore = best);
+  }
 
   @override
   void dispose() {
     _timerDone = true;
-    if (AudioP.canPlay) {
-      AudioP.audioPlayer.stop();
-    }
-    _countdownTimer.cancel();
+    AudioP.stop();
+    _countdownTimer?.cancel();
+    // The round is over (time ran out or the player left): record the score.
+    HighScore.submit(numCorrect);
     super.dispose();
   }
 
@@ -111,10 +90,8 @@ class StaggeredNumbersState extends NumbersState {
   Widget build(BuildContext context) {
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
-    user = Provider.of<User>(context);
-    return StreamBuilder<DocumentSnapshot>(
-      stream: DatabaseService(uid: user.uid).userCollection.document(user.uid).snapshots(),
-      builder: (context, snapshot) {
+    return Builder(
+      builder: (context) {
         return Container(
           height: _height - 80,
           width: _width,
@@ -175,7 +152,7 @@ class StaggeredNumbersState extends NumbersState {
                     Expanded(
                       child: Padding(
                         padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
-                        child: FittedBox(child: Text(snapshot.data['highScore'].toString())),
+                        child: FittedBox(child: Text('${max(_highScore, numCorrect)}')),
                       ),
                     ),
                     SizedBox(

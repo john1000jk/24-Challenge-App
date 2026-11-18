@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:twenty_four_game/providers/color_provider.dart';
 
 class Onboarding extends StatelessWidget {
+  const Onboarding({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +40,7 @@ class Onboarding extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text('Tutorial',
-                    style: Theme.of(context).textTheme.headline4.copyWith(
+                    style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                       color: colorProvider.color,
                     ),),
                 ),
@@ -48,7 +49,7 @@ class Onboarding extends StatelessWidget {
                   onTap: () => Navigator.pushReplacementNamed(context, '/home'),
                   child: Container(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text('Skip', style: Theme.of(context).textTheme.headline1.copyWith(
+                    child: Text('Skip', style: Theme.of(context).textTheme.displayLarge!.copyWith(
                       color: colorProvider.color,
                     ),),
                   ),

@@ -1,11 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:twenty_four_game/screens/onboarding/models/onboard_page_model.dart';
 
 class OnboardPage extends StatefulWidget {
   final OnboardPageModel pageModel;
 
-  const OnboardPage({Key key, this.pageModel}) : super(key: key);
+  const OnboardPage({super.key, required this.pageModel});
 
   @override
   State<StatefulWidget> createState() {
@@ -70,7 +69,7 @@ class _OnboardPageState extends State<OnboardPage> {
                 children: <Widget>[
                   Text(
                     widget.pageModel.caption,
-                    style: Theme.of(context).textTheme.headline3.copyWith(
+                    style: Theme.of(context).textTheme.displaySmall!.copyWith(
                       color: widget.pageModel.secondColor.withOpacity(.8),
                       fontSize: 28,
                         ),
@@ -79,7 +78,7 @@ class _OnboardPageState extends State<OnboardPage> {
                     padding: EdgeInsets.only(top: _height/60, bottom: _height/120),
                     child: Text(
                       widget.pageModel.message,
-                      style: Theme.of(context).textTheme.headline4.copyWith(
+                      style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                         fontSize: 36,
                         color: widget.pageModel.secondColor,
                         fontWeight: FontWeight.bold,
@@ -90,7 +89,7 @@ class _OnboardPageState extends State<OnboardPage> {
                     padding: EdgeInsets.symmetric(vertical: _height/50),
                     child: RichText(
                       text: TextSpan(
-                        style: Theme.of(context).textTheme.headline4.copyWith(
+                        style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                               fontSize: 18,
                           color: widget.pageModel.secondColor.withOpacity(.9),
 
