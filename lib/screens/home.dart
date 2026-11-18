@@ -209,7 +209,6 @@ class _HomeTwoState extends State<HomeTwo> with TickerProviderStateMixin {
                         setState(() {
                           AudioP.canPlay = !AudioP.canPlay;
                         });
-//                        Navigator.pushNamed(context, '/settings');
                       },
                       child: Icon(
                         (AudioP.canPlay) ? Icons.volume_up : Icons.volume_off,
@@ -281,13 +280,6 @@ class _HomeTwoState extends State<HomeTwo> with TickerProviderStateMixin {
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(100),
-//                gradient: LinearGradient(
-//                    begin: Alignment.topLeft,
-//                    end: Alignment.bottomRight,
-//                    colors: [
-//                      primeColors[index],
-//                      secondColors[index],
-//                    ]),
                 boxShadow: [
                   BoxShadow(
                     color: Color(0x80000000),

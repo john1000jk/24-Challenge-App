@@ -26,7 +26,6 @@ void main() {
   });
 
   group('board', () {
-    // Tiles show whole numbers without decimals; used tiles show ''.
     Future<List<double>> pumpBoard(WidgetTester tester, List<double> nums) async {
       tester.view.physicalSize = const Size(1080, 2400);
       tester.view.devicePixelRatio = 2.667;
