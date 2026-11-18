@@ -7,8 +7,8 @@ class BeginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double _width = MediaQuery.of(context).size.width;
-    double _height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
 
     return Scaffold(
       body: Column(
@@ -17,8 +17,8 @@ class BeginScreen extends StatelessWidget {
         children: <Widget>[
           Center(
             child: Container(
-              width: _width/2,
-              height: _height/8,
+              width: width/2,
+              height: height/8,
               padding: EdgeInsets.all(10),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(

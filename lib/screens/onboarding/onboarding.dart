@@ -9,8 +9,7 @@ class Onboarding extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // double _width = MediaQuery.of(context).size.width;
-    double _height = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.width;
 
     ColorProvider colorProvider = Provider.of<ColorProvider>(context);
     return Stack(
@@ -26,9 +25,9 @@ class Onboarding extends StatelessWidget {
             );
           },
         ),
-        Container(
+        SizedBox(
           width: double.infinity,
-          height: _height/5,
+          height: height/5,
           child: Align(
             alignment: Alignment.bottomCenter,
             child: Row(

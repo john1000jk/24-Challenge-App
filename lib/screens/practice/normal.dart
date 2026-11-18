@@ -16,7 +16,10 @@ class Normal extends StatelessWidget {
       appBar: AppBar(
         title: Text('Normal Screen'),
       ),
-      body: Numbers(Database.getCombos().elementAt(comboIndex), comboIndex),
+      body: Numbers(
+          // A copy: the board edits its numbers as you play.
+          List.of(Database.getCombos().elementAt(comboIndex)),
+          comboIndex),
     );
   }
 }

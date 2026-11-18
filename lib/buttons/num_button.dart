@@ -18,36 +18,26 @@ class NumButton extends StatefulWidget {
 
 class _NumButtonState extends State<NumButton> {
 
-  void _performOperation(int opIndex) {
-    double value = 0;
+  /// Combines the selected number with this one using operator [opIndex].
+  /// Returns false if the move isn't allowed (dividing by zero), in which
+  /// case the board is left unchanged.
+  bool _performOperation(int opIndex) {
     for (int i = 0; i < widget.parent.isSelected.length; i++) {
       if (i != widget.index) {
         if (widget.parent.isSelected[i]) {
-          switch (opIndex) {
-            case 0:
-              value = widget.parent.widget.numList[i] +
-                  widget.parent.widget.numList[widget.index];
-              widget.parent.addOperation(Operation(widget.index, 0, i));
-              break;
-            case 1:
-              value = widget.parent.widget.numList[i] -
-                  widget.parent.widget.numList[widget.index];
-              widget.parent.addOperation(Operation(widget.index, 1, i));
-              break;
-            case 2:
-              value = widget.parent.widget.numList[i] *
-                  widget.parent.widget.numList[widget.index];
-              widget.parent.addOperation(Operation(widget.index, 2, i));
-              break;
-            case 3:
-              value = widget.parent.widget.numList[i] /
-                  widget.parent.widget.numList[widget.index];
-              widget.parent.addOperation(Operation(widget.index, 3, i));
-              if ((value.round() - value).abs() < .01) {
-                value = value.round().toDouble();
-              }
-              break;
+          final numList = widget.parent.widget.numList;
+          final value = applyOperation(opIndex, numList[i], numList[widget.index]);
+          if (value == null) {
+            ScaffoldMessenger.of(context)
+              ..hideCurrentSnackBar()
+              ..showSnackBar(const SnackBar(
+                content: Text("Can't divide by 0"),
+                duration: Duration(seconds: 2),
+              ));
+            return false;
           }
+          widget.parent.addOperation(Operation(widget.index, opIndex, i,
+              previousValue: numList[widget.index]));
           widget.parent.changeDisabledButtons(i, true);
           widget.parent.widget.changeNumList(widget.index, value);
           if (value == 24) {
@@ -71,6 +61,7 @@ class _NumButtonState extends State<NumButton> {
         }
       }
     }
+    return true;
   }
 
   VoidCallback? _totalFunction() {
@@ -80,15 +71,12 @@ class _NumButtonState extends State<NumButton> {
       return () {
         widget.parent.setState(
               () {
-            if (widget.parent.opSelected[0]) {
-              _performOperation(0);
-            } else if (widget.parent.opSelected[1]) {
-              _performOperation(1);
-            } else if (widget.parent.opSelected[2]) {
-              _performOperation(2);
-            } else if (widget.parent.opSelected[3]) {
-              _performOperation(3);
-              }
+            final opIndex = widget.parent.opSelected.indexOf(true);
+            if (opIndex != -1 && !_performOperation(opIndex)) {
+              // Move refused: keep the current selection so the player
+              // can pick a different number.
+              return;
+            }
             for (int i = 0; i < widget.parent.isSelected.length; i++) {
               if (i != widget.index) {
                 widget.parent.changeSelected(i, false);

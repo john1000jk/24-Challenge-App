@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:twenty_four_game/screens/onboarding/models/onboard_page_model.dart';
 

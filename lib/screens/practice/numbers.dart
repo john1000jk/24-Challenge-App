@@ -106,44 +106,13 @@ class NumbersState extends State<Numbers> {
   }
 
   void reverseOperation(Operation o) {
-    double value = 0;
-    switch (o.opIndex) {
-      case 0:
-        value = widget.numList[o.changedIndex] - widget.numList[o.operandIndex];
-        if ((value.round() - value).abs() < .01) {
-          value = value.round().toDouble();
-        }
-        break;
-      case 1:
-        value = -1 * widget.numList[o.changedIndex] +
-            widget.numList[o.operandIndex];
-        if ((value.round() - value).abs() < .01) {
-          value = value.round().toDouble();
-        }
-        break;
-      case 2:
-        value = widget.numList[o.changedIndex] / widget.numList[o.operandIndex];
-        if ((value.round() - value).abs() < .01) {
-          value = value.round().toDouble();
-        }
-        break;
-      case 3:
-        value = 1 /
-            widget.numList[o.changedIndex] * //Need to check for 0 later
-            widget.numList[o.operandIndex];
-        if ((value.round() - value).abs() < .01) {
-          value = value.round().toDouble();
-        }
-        break;
-    }
-
     removeOperation();
     for (int i = 0; i < isSelected.length; i++) {
       changeSelected(i, false);
     }
     changeSelected(o.operandIndex, true);
     disabledButtons[o.operandIndex] = false;
-    widget.changeNumList(o.changedIndex, value);
+    widget.changeNumList(o.changedIndex, o.previousValue);
   }
 
   void reset() {
@@ -170,14 +139,14 @@ class NumbersState extends State<Numbers> {
         i < Database.getSolutions().elementAt(comboIndexS).length;
         i++) {
       if (i < 6) {
-        enterSepSols += (i + 1).toString() + ":  ";
+        enterSepSols += "${i + 1}:  ";
         enterSepSols += Database.getSolutions().elementAt(comboIndexS)[i];
         if (i != 5 &&
             i != Database.getSolutions().elementAt(comboIndexS).length - 1) {
           enterSepSols += '\n';
         }
       } else {
-        enterSepSols2 += (i + 1).toString() + ":  ";
+        enterSepSols2 += "${i + 1}:  ";
         enterSepSols2 += Database.getSolutions().elementAt(comboIndexS)[i];
         if (i != Database.getSolutions().elementAt(comboIndexS).length - 1) {
           enterSepSols2 += '\n';
@@ -211,32 +180,27 @@ class NumbersState extends State<Numbers> {
                 content: FittedBox(
                   child: Column(
                     children: <Widget>[
-                      Container(
+                      SizedBox(
                         width: 300,
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Expanded(
-                              child: Container(
-                                child: Text(
-                                  enterSepSols,
-                                  style: (enterSepSols2.length == 0)
-                                      ? TextStyle(fontSize: 35, height: 1.5)
-                                      : TextStyle(fontSize: 20, height: 1.5),
-                                ),
+                              child: Text(
+                                enterSepSols,
+                                style: (enterSepSols2.isEmpty)
+                                    ? TextStyle(fontSize: 35, height: 1.5)
+                                    : TextStyle(fontSize: 20, height: 1.5),
                               ),
                             ),
-                            (enterSepSols2.length != 0)
+                            (enterSepSols2.isNotEmpty)
                                 ? Column(
                                     children: <Widget>[
-                                      (enterSepSols2.length != 0)
-                                          ? Container(
-                                              child: Text(
-                                              enterSepSols2,
-                                              style: TextStyle(
-                                                  fontSize: 20, height: 1.5),
-                                            ))
-                                          : Container(),
+                                      Text(
+                                        enterSepSols2,
+                                        style: TextStyle(
+                                            fontSize: 20, height: 1.5),
+                                      ),
                                     ],
                                   )
                                 : Container(),
@@ -246,7 +210,7 @@ class NumbersState extends State<Numbers> {
                       FittedBox(
                         child: Padding(
                           padding: const EdgeInsets.only(top: 20.0),
-                          child: Container(
+                          child: SizedBox(
                             width: 300,
                             child: Center(
                               child: Text(
@@ -278,17 +242,17 @@ class NumbersState extends State<Numbers> {
 
   @override
   Widget build(BuildContext context) {
-    double _width = MediaQuery.of(context).size.width;
-    double _height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
 
-    return Container(
-      width: _width,
-      height: _height - 80,
+    return SizedBox(
+      width: width,
+      height: height - 80,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Container(
-            height: _width / 2,
+          SizedBox(
+            height: width / 2,
             child: Row(
               children: <Widget>[
                 Expanded(
@@ -306,8 +270,8 @@ class NumbersState extends State<Numbers> {
               ],
             ),
           ),
-          Container(
-            height: _width / 2,
+          SizedBox(
+            height: width / 2,
             child: Row(
               children: <Widget>[
                 Expanded(
@@ -325,8 +289,8 @@ class NumbersState extends State<Numbers> {
               ],
             ),
           ),
-          Container(
-            height: (_height - 90 - _width) / 2,
+          SizedBox(
+            height: (height - 90 - width) / 2,
             child: Padding(
               padding: const EdgeInsets.only(left: 15.0, right: 15.0),
               child: Row(
@@ -339,8 +303,8 @@ class NumbersState extends State<Numbers> {
               ),
             ),
           ),
-          Container(
-            height: (_height - 90 - _width) / 2,
+          SizedBox(
+            height: (height - 90 - width) / 2,
             child: Row(
               children: <Widget>[
                 Expanded(

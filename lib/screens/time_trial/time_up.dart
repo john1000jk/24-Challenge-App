@@ -60,21 +60,21 @@ class AnimationStationState extends State<AnimationStation>
 
   @override
   Widget build(BuildContext context) {
-    double _width = MediaQuery.of(context).size.width;
-    double _height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     timeDilation = 1.0;
     return Scaffold(
       appBar: AppBar(
         title: Text('Finished'),
       ),
-      body: Container(
-        width: _width,
-        height: _height * .8,
+      body: SizedBox(
+        width: width,
+        height: height * .8,
         child: Column(
           children: <Widget>[
-            Container(
-              width: _width,
-              height: _height * .001,
+            SizedBox(
+              width: width,
+              height: height * .001,
               child: Align(
                 alignment: Alignment.center,
                 child: ConfettiWidget(
@@ -90,9 +90,9 @@ class AnimationStationState extends State<AnimationStation>
                 ),
               ),
             ),
-            Container(
-              width: _width,
-              height: _height * .2,
+            SizedBox(
+              width: width,
+              height: height * .2,
               child: FittedBox(
                 child: Padding(
                   padding: EdgeInsets.only(right: 20.0, left: 20.0),
@@ -104,16 +104,16 @@ class AnimationStationState extends State<AnimationStation>
                 ),
               ),
             ),
-            Container(
-              width: _width,
-              height: _height * .4,
+            SizedBox(
+              width: width,
+              height: height * .4,
               child: MultiAnimation(
                 controller: _animationController.view,
               ),
             ),
-            Container(
-              width: _width,
-              height: _height * .15,
+            SizedBox(
+              width: width,
+              height: height * .15,
               child: Row(
                 children: <Widget>[
                   Spacer(),
@@ -270,9 +270,11 @@ class MultiAnimation extends StatelessWidget {
   final Animation<double> scale;
 
   Widget _buildAnim(BuildContext context, Widget? child) {
-    return Container(
-      child: AnimatedContainer(
+    return AnimatedContainer(
         duration: Duration(milliseconds: 2500),
+        transform:
+            Matrix4.translationValues(translateX.value, translateY.value, 0)
+              ..scaleByDouble(scale.value, scale.value, scale.value, 1),
         child: Opacity(
           opacity: opacity.value,
           child: Text(
@@ -280,10 +282,6 @@ class MultiAnimation extends StatelessWidget {
             style: Theme.of(context).textTheme.displayMedium!,
           ),
         ),
-        transform:
-            Matrix4.translationValues(translateX.value, translateY.value, 0)
-              ..scale(scale.value),
-      ),
     );
   }
 
@@ -301,8 +299,8 @@ class AnsweredQuestions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double _width = MediaQuery.of(context).size.width;
-    double _height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
 
     return Scaffold(
       appBar: AppBar(
@@ -310,14 +308,14 @@ class AnsweredQuestions extends StatelessWidget {
       ),
       body: Column(
         children: <Widget>[
-          Container(
-            width: _width,
-            height: _height * .74,
+          SizedBox(
+            width: width,
+            height: height * .74,
             child: ListView.separated(
               itemCount: StaggeredNumbersState.problemIndices.length + 1,
               itemBuilder: (BuildContext context, int index) {
-                return Container(
-                  height: _height * .1,
+                return SizedBox(
+                  height: height * .1,
                   child: ListView.builder(
                     padding: const EdgeInsets.all(8),
                     scrollDirection: Axis.horizontal,
@@ -329,8 +327,8 @@ class AnsweredQuestions extends StatelessWidget {
                                 .length +
                             2,
                     itemBuilder: (BuildContext context, int index2) {
-                      return Container(
-                        width: (index2 == 0) ? _width / 6.5 : _width * .4,
+                      return SizedBox(
+                        width: (index2 == 0) ? width / 6.5 : width * .4,
                         child: Center(
                           child: (index == 0 && index2 == 0)
                               ? Icon(
@@ -348,12 +346,12 @@ class AnsweredQuestions extends StatelessWidget {
                                               style: TextStyle(fontSize: 23))
                                           : (index2 == 1)
                                               ? Text(
-                                                  '${Database.writCombos().elementAt(StaggeredNumbersState.problemIndices[index - 1])}',
+                                                  Database.writCombos().elementAt(StaggeredNumbersState.problemIndices[index - 1]),
                                                   style:
                                                       TextStyle(fontSize: 21.5),
                                                 )
                                               : Text(
-                                                  '${Database.getSolutions().elementAt(StaggeredNumbersState.problemIndices[index - 1]).elementAt(index2 - 2)}',
+                                                  Database.getSolutions().elementAt(StaggeredNumbersState.problemIndices[index - 1]).elementAt(index2 - 2),
                                                   style: TextStyle(
                                                       fontSize: 21.5)),
                         ),
@@ -379,8 +377,8 @@ class AnsweredQuestions extends StatelessWidget {
               ),
               shape: BoxShape.rectangle,
             ),
-            height: _height * .13,
-            width: _width,
+            height: height * .13,
+            width: width,
             child: Padding(
               padding: const EdgeInsets.only(
                   top: 10.0, left: 0, right: 0, bottom: 10.0),

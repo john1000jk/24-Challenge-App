@@ -16,23 +16,23 @@ class _SettingsState extends State<Settings> {
 
   @override
   Widget build(BuildContext context) {
-    double _width = MediaQuery.of(context).size.width;
-    double _height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      body: Container(
-        width: _width,
-        height: _height,
+      body: SizedBox(
+        width: width,
+        height: height,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Container(
+            SizedBox(
               width: 250,
               height: 150,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Container(
+                  SizedBox(
                     width: 150,
                     height: 150,
                     child: FittedBox(
@@ -48,7 +48,7 @@ class _SettingsState extends State<Settings> {
                     height: 100,
                     child: FittedBox(
                       child: Switch(
-                        activeColor: Colors.green,
+                        activeThumbColor: Colors.green,
                         value: musicOn,
                         onChanged: (value) {
                           setState(() {

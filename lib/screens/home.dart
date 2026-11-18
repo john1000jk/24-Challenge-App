@@ -18,19 +18,11 @@ class HomeTwo extends StatefulWidget {
 
 class _HomeTwoState extends State<HomeTwo> with TickerProviderStateMixin {
   final AuthService _authService = AuthService();
-  List<String> _buttonNames = ['Time Trial', 'Multiplayer', 'Practice', 'How to Play'];
-  List<String> _buttonRoutes = ['/begin_screen1', '/multiplayer', '/normal', '/how_to_play'];
-  bool _isClicked = false;
-  List<Color> primeColors = [
-    Color.fromRGBO(29, 242, 242, 1.0),
-    Color.fromRGBO(29, 168, 242, 1.0),
-    Color.fromRGBO(29, 89, 242, 1.0),
-  ];
-  List<Color> secondColors = [
-    Color.fromRGBO(29, 168, 242, 1.0),
-    Color.fromRGBO(29, 89, 242, 1.0),
-    Color.fromRGBO(89, 29, 242, 1.0),
-  ];
+  final List<String> _buttonNames = ['Time Trial', 'Multiplayer', 'Practice', 'How to Play'];
+  final List<String> _buttonRoutes = ['/begin_screen1', '/multiplayer', '/normal', '/how_to_play'];
+  /// True while a button is opening its screen, so a double tap can't open
+  /// it twice. Cleared when the player comes back to this screen.
+  bool _navigating = false;
 
   late final List<AnimationController> _controllers;
   final List<double> _buttonScales = List.filled(4, 1.0);
@@ -61,25 +53,24 @@ class _HomeTwoState extends State<HomeTwo> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    double _width = MediaQuery.of(context).size.width;
-    double _height = MediaQuery.of(context).size.height;
-    _isClicked = false;
-    for (int i = 0; i < 3; i++) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+    for (int i = 0; i < _controllers.length; i++) {
       _buttonScales[i] = 1 - _controllers[i].value;
     }
 
     return Scaffold(
       backgroundColor: accentColor,
-      body: Container(
-        width: _width,
-        height: _height,
+      body: SizedBox(
+        width: width,
+        height: height,
         child: Stack(
           children: [
             CustomPaint(
               painter: BackgroundPainter(),
-              child: Container(
-                width: _width,
-                height: _height,
+              child: SizedBox(
+                width: width,
+                height: height,
               ),
             ),
             Align(
@@ -93,8 +84,8 @@ class _HomeTwoState extends State<HomeTwo> with TickerProviderStateMixin {
                       children: <Widget>[
                         Container(
                           padding: EdgeInsets.all(4.0),
-                          width: _height * .3,
-                          height: _height * .3,
+                          width: height * .3,
+                          height: height * .3,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: Colors.blue,
@@ -163,8 +154,8 @@ class _HomeTwoState extends State<HomeTwo> with TickerProviderStateMixin {
                           ),
                         ),
                         Container(
-                          width: _height * .208,
-                          height: _height * .208,
+                          width: height * .208,
+                          height: height * .208,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: Colors.white,
@@ -198,7 +189,7 @@ class _HomeTwoState extends State<HomeTwo> with TickerProviderStateMixin {
             Positioned(
               right: 15,
               top: 25,
-              child: Container(
+              child: SizedBox(
                 width: 50,
                 height: 50,
                 child: Ink(
@@ -208,7 +199,6 @@ class _HomeTwoState extends State<HomeTwo> with TickerProviderStateMixin {
                         setState(() {
                           AudioP.canPlay = !AudioP.canPlay;
                         });
-//                        Navigator.pushNamed(context, '/settings');
                       },
                       child: Icon(
                         (AudioP.canPlay) ? Icons.volume_up : Icons.volume_off,
@@ -242,39 +232,34 @@ class _HomeTwoState extends State<HomeTwo> with TickerProviderStateMixin {
     );
   }
 
+  /// Plays the button's release animation, then opens its screen.
+  Future<void> _openScreen(int index) async {
+    if (_navigating) return;
+    _navigating = true;
+    try {
+      await _controllers[index].reverse();
+      if (_buttonNames[index] == 'Practice') {
+        try {
+          await AudioP.loadMusic();
+        } catch (e) {
+          debugPrint('Could not start music: $e');
+        }
+      }
+      if (!mounted) return;
+      // Completes when the player returns to the home screen.
+      await Navigator.pushNamed(context, _buttonRoutes[index]);
+    } finally {
+      _navigating = false;
+    }
+  }
+
   Widget _animatedButton(int index) => GestureDetector(
-        onTapUp: (TapUpDetails details) {
-          if (_buttonNames[index] == 'Practice') {
-            _controllers[index].reverse().then((value) {
-              if (!_isClicked) {
-                _isClicked = true;
-                AudioP.loadMusic()
-                    .then((value) {
-                  Navigator.pushNamed(context, _buttonRoutes[index]);
-              }
-                );}});
-          } else {
-            _controllers[index].reverse().then(
-                (value) => Navigator.pushNamed(context, _buttonRoutes[index]));
-          }
-        },
         onTapDown: (TapDownDetails details) {
-          _isClicked = true;
           _controllers[index].forward();
         },
-        onTapCancel: () {
-          if (_buttonNames[index] == 'Practice') {
-            AudioP.loadMusic().then(
-              (value) {
-                Navigator.pushNamed(context, _buttonRoutes[index]);
-                _controllers[index].reverse();
-              },
-            );
-          } else {
-            Navigator.pushNamed(context, _buttonRoutes[index]);
-            _controllers[index].reverse();
-          }
-        },
+        onTapUp: (TapUpDetails details) => _openScreen(index),
+        // Finger slid off the button: just restore it, don't open anything.
+        onTapCancel: () => _controllers[index].reverse(),
         child: Transform.scale(
           scale: _buttonScales[index],
           child: Padding(
@@ -285,13 +270,6 @@ class _HomeTwoState extends State<HomeTwo> with TickerProviderStateMixin {
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(100),
-//                gradient: LinearGradient(
-//                    begin: Alignment.topLeft,
-//                    end: Alignment.bottomRight,
-//                    colors: [
-//                      primeColors[index],
-//                      secondColors[index],
-//                    ]),
                 boxShadow: [
                   BoxShadow(
                     color: Color(0x80000000),
