@@ -106,44 +106,13 @@ class NumbersState extends State<Numbers> {
   }
 
   void reverseOperation(Operation o) {
-    double value = 0;
-    switch (o.opIndex) {
-      case 0:
-        value = widget.numList[o.changedIndex] - widget.numList[o.operandIndex];
-        if ((value.round() - value).abs() < .01) {
-          value = value.round().toDouble();
-        }
-        break;
-      case 1:
-        value = -1 * widget.numList[o.changedIndex] +
-            widget.numList[o.operandIndex];
-        if ((value.round() - value).abs() < .01) {
-          value = value.round().toDouble();
-        }
-        break;
-      case 2:
-        value = widget.numList[o.changedIndex] / widget.numList[o.operandIndex];
-        if ((value.round() - value).abs() < .01) {
-          value = value.round().toDouble();
-        }
-        break;
-      case 3:
-        value = 1 /
-            widget.numList[o.changedIndex] * //Need to check for 0 later
-            widget.numList[o.operandIndex];
-        if ((value.round() - value).abs() < .01) {
-          value = value.round().toDouble();
-        }
-        break;
-    }
-
     removeOperation();
     for (int i = 0; i < isSelected.length; i++) {
       changeSelected(i, false);
     }
     changeSelected(o.operandIndex, true);
     disabledButtons[o.operandIndex] = false;
-    widget.changeNumList(o.changedIndex, value);
+    widget.changeNumList(o.changedIndex, o.previousValue);
   }
 
   void reset() {
